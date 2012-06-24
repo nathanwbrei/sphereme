@@ -30,11 +30,18 @@ public abstract class AbstractNote {
 	
 	public abstract byte[] getContent();
 	public abstract Bitmap getThumbnail();
-	
+
 	//must give it a database instance
 	public void save(NoteDatabaseHelper h)
 	{
-		h.updateNote(this);
+		if(h.existsNote(this))
+		{
+			h.updateNote(this);
+		}
+		else
+		{
+			h.addNote(this);
+		}
 	}
 	
 	public abstract void setRTZ(double r, double t, double z);

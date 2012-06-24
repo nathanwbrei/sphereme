@@ -18,7 +18,7 @@ public class SQLStatements {
                 "_id int primary key" +
                 ");";
 
-    static final String GET_NOTE = "SELECT r,t,z,nx,ny,nz,type,thumbnail,content from notes where _id = ?";
+    static final String GET_NOTE_EXISTS = "SELECT count(*) from notes where _id = ?";
     static final String INSERT_NOTE = "INSERT INTO notes (r,t,z,nx,ny,nz,type,thumbnail,content, _id) " +
     								  " values (?,?,?,?,?,?,?,?,?,?)";
     static final String UPDATE_NOTE = "UPDATE notes set r=?,t=?,z=?,nx=?,ny=?,nz=?, type=?, thumbnail=?, content=? where _id=?";
