@@ -16,7 +16,7 @@ public class TextBasedWorldView extends RelativeLayout {
 	
 	// Dummy variable to get values to update whenever you touch the screen
 	// Needs to be replaced with live data, and a call to invalidate()
-	public float t = 0;
+	public float theta = 0;
 		
 	// Bounding box for screen. See onSizeChanged()
 	public int maxX = 0;
@@ -53,18 +53,18 @@ public class TextBasedWorldView extends RelativeLayout {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		noteViews.get(0).setText("Changed layout: " + System.currentTimeMillis() + " " + theta);
+		
 		// Now we draw all of the strings which are in our bucket
-		t += .01f;
 		for (int i=0;i<3;i++){
 			NoteView note = noteViews.get(i+1);
 			
-			if (ts[i] == (int) t){  //if our test value matches our discretized azimuth
+			if (ts[i] == (int) theta){  //if our test value matches our discretized azimuth
 				note.setVisibility(View.VISIBLE);
 			} else {
 				note.setVisibility(View.GONE);
 			}
 		}
-		noteViews.get(0).setText("Chagned layout: " + (int) t);
 		// Create an infinite draw loop by requesting another onDraw()
 		super.onLayout(changed, l, t, r, b);
 		invalidate();
