@@ -10,7 +10,7 @@ import android.view.View;
  * Extend this if you want some tap action! Fires (one) listener on "tap" and on "tap and hold" 
  * @author Katherine
  */
-abstract class TapNotifiedActivity extends Activity implements TapListener {
+public abstract class TapNotifiedActivity extends Activity implements TapListener {
 
 	private SensorManager manager;
 	private Sensor sensor;

@@ -1,12 +1,11 @@
 package com.theamrzone.android.sphereme;
 
 import android.graphics.Bitmap;
-import android.util.Base64;
 
 public class Note extends AbstractNote {
 
-	private static final String STRING = "STRING";
-	private static final String IMAGE = "IMAGE";
+	public static final String STRING = "STRING";
+	public static final String IMAGE = "IMAGE";
 	
 	private final int id;
 	private double r;

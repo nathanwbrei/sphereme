@@ -18,6 +18,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
         android:text="@string/editor_save"
-        android:onClick="sendMessage"/>
+        android:onClick="exitAndCreateNewNote"/>
 
 </LinearLayout>

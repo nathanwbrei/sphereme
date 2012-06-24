@@ -6,6 +6,9 @@ import java.nio.ByteBuffer;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.util.Base64;
 
 public abstract class AbstractNote {
@@ -72,4 +75,19 @@ public abstract class AbstractNote {
 		return Base64.decode(s, Base64.DEFAULT);
 	}
 	
+	public static Bitmap stringToBitmap(String s) {
+		int w = 100, h = 100;
+		Paint paint = new Paint();
+		paint.setColor(0xff00ff00);
+		paint.setStyle(Style.STROKE);
+		paint.setStrokeWidth(2);
+		paint.setAntiAlias(true);
+		
+		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+		Bitmap bmp = Bitmap.createBitmap(w, h, conf); // this creates a MUTABLE bitmap
+		Canvas c = new Canvas(bmp);
+		c.drawText(s, 0, 0, paint);
+		
+		return bmp;
+	}
 }

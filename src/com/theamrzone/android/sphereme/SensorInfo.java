@@ -1,14 +1,10 @@
 package com.theamrzone.android.sphereme;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.content.ContextWrapper;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.widget.TextView;
-import android.content.Context;
-import android.content.ContextWrapper;
 
 //SensorInfo is an object which stores all of the raw sensor information
 //as well as other relevant calculated information in publicly accessible variables.
@@ -40,20 +36,22 @@ public class SensorInfo extends ContextWrapper implements SensorEventListener {
 								// to left 6 degrees is bucket "30".
 	private int numVC = 30; // Change this to increase or decrease number of VCs (columns, buckets).  More means can fit more icons in
 										// physical space but more jumpiness / calibration / noise filtering required.
-	  
-	public SensorInfo(Context base) {
+	
+	private SensorListener listener;
+	
+	public SensorInfo(SensingActivity base) {
 		super(base);
+		listener = base;
 		mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 	    mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 	    mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 	    mField = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-	    
 	}
 	
 	public SensorManager mSensorManager;
-    private Sensor mAccelerometer;
-    private Sensor mGyroscope;
-    private Sensor mField;
+    public Sensor mAccelerometer;
+    public Sensor mGyroscope;
+    public Sensor mField;
     private float[] mGravity;
     private float[] mMagnetic;
     private float[] mGyros;
@@ -81,9 +79,11 @@ public class SensorInfo extends ContextWrapper implements SensorEventListener {
         }
         //Determine the VisualColumn in the visual plane to which it belongs
         VisualColumn = (getVCFromDegrees(values[0]) );
+//    	debugger.setText("Updated VC: " + VisualColumn + " " + System.currentTimeMillis());
         //Display the raw values
-//        valueView.setText(String.format("Azimuth: %1$1.2f, Pitch: %2$1.2f, Roll: %3$1.2f",
+//        debugger.setText(String.format("Azimuth: %1$1.2f, Pitch: %2$1.2f, Roll: %3$1.2f",
 //                values[0], values[1], values[2]));
+        listener.onSensorChanged(this);
     }
 
     private double[] drev(double low, double up) {
@@ -92,8 +92,7 @@ public class SensorInfo extends ContextWrapper implements SensorEventListener {
     	if (low > 180) {low = low - 360;}
     	if (up > 180) {up = up - 360;}
     	// if both are negative, need to switch them 
-    	if (up < 0 && low < 0) { range = new double[] {up, low}; }
-    	else { range = new double[] {low, up};}
+    	range = new double[] {low, up};
     	return range;
     }
     
@@ -106,7 +105,14 @@ public class SensorInfo extends ContextWrapper implements SensorEventListener {
     		double[] check = drev(lower, upper);
     		lower = check[0];
     		upper = check[1];
-    		if(degrees >= lower && degrees < upper) {return i; }
+    		
+    		// for the odd case around -180/180
+    		if (lower > upper) { 
+    			if (degrees >= lower || degrees < upper) { return i; }
+    		// for the new degrees
+    		} else if (degrees >= lower && degrees < upper) {
+    			return i; 
+    		}
     	}
     	
         /*
