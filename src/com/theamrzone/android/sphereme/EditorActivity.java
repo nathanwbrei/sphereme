@@ -23,7 +23,7 @@ public class EditorActivity extends Activity  {
 		// 2: Get the contents
 		String content = editBox.getText().toString();
 		Note note = new Note(0, 0, 0, 0, 0, 0, "text", null, content.getBytes());
-		note.save();
+		//note.save();
 		
 		// TODO: go back to world view [with current location?]
 

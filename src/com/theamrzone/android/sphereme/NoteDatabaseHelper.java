@@ -1,5 +1,4 @@
 package com.theamrzone.android.sphereme;
-
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -7,34 +6,54 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
+import android.view.View;
 
 public class NoteDatabaseHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 2;
+
+	private static NoteDatabaseHelper INSTANCE = null;
     
     private static int s_note_counter=-1;
     
     private SQLiteStatement update;
     private SQLiteStatement add;
     
-    NoteDatabaseHelper(Context context) {
+    private NoteDatabaseHelper(Context context) {
         super(context, SQLStatements.DATABASE_NAME, null, DATABASE_VERSION);
         Cursor c= this.getReadableDatabase().rawQuery(SQLStatements.GET_COUNTER, new String[] {});
+        c.moveToNext();
         s_note_counter=c.getInt(0);
         
         update=this.getWritableDatabase().compileStatement(SQLStatements.UPDATE_NOTE);
         add= this.getWritableDatabase().compileStatement(SQLStatements.INSERT_NOTE);
     }
 
+    public static NoteDatabaseHelper getInstance(Context context)
+    {
+    	if (INSTANCE==null)
+    	{
+    		INSTANCE= new NoteDatabaseHelper(context);
+    	}
+    	
+    	return INSTANCE;
+    }
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQLStatements.NOTE_TABLE_CREATE);
+        
+        //debugging purposes only
     }
 
 	@Override
-	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-		//TODO:
-	}
+	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
+		// Drop older table if existed
+        db.execSQL("DROP TABLE IF EXISTS " + SQLStatements.DATABASE_NAME);
+ 
+        // Create tables again
+        onCreate(db);	
+    }
 	
 	public static int incrementCounter()
 	{
@@ -43,24 +62,26 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		return i;
 	}
 	
-	public void addNote(INote n)
+	public void addNote(AbstractNote n)
 	{
 		add.clearBindings();
-		add.bindDouble(0, n.getR());
-		add.bindDouble(1, n.getT());
-		add.bindDouble(2, n.getZ());
-		
+		add.bindDouble(1, n.getR());
+		add.bindDouble(2, n.getT());
+		add.bindDouble(3, n.getZ());
+		Log.d("DEBUG", "a");
 		NormalVector normal=n.getNormalVector();
-		add.bindDouble(3, normal.getX());
-		add.bindDouble(4, normal.getY());
-		add.bindDouble(5, normal.getZ());
+		add.bindDouble(4, normal.getX());
+		add.bindDouble(5, normal.getY());
+		add.bindDouble(6, normal.getZ());
+		Log.d("DEBUG", "b");
+		add.bindString(7, n.getType());
+		Log.d("DEBUG", "c");
 		
-		add.bindString(6, n.getType());
-		
-		add.bindBlob(7, n.getThumbnail());
-		add.bindBlob(8, n.getContent());
-		
-		add.bindLong(9, n.getId());
+
+		add.bindBlob(8, AbstractNote.BitmapToBinary(n.getThumbnail()));
+		add.bindBlob(9, n.getContent());
+		Log.d("DEBUG", "d");
+		add.bindLong(10, n.getId());
 		add.executeInsert();
 	}
 	
@@ -69,36 +90,37 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 	 * @param n the current note
 	 * @return whether the update was succesful or not
 	 */
-	public void updateNote(INote n)
+	public void updateNote(AbstractNote n)
 	{
 		update.clearBindings();
-		update.bindDouble(0, n.getR());
-		update.bindDouble(1, n.getT());
-		update.bindDouble(2, n.getZ());
+		update.bindDouble(1, n.getR());
+		update.bindDouble(2, n.getT());
+		update.bindDouble(3, n.getZ());
 		
 		NormalVector normal=n.getNormalVector();
-		update.bindDouble(3, normal.getX());
-		update.bindDouble(4, normal.getY());
-		update.bindDouble(5, normal.getZ());
+		update.bindDouble(4, normal.getX());
+		update.bindDouble(5, normal.getY());
+		update.bindDouble(6, normal.getZ());
 		
-		update.bindString(6, n.getType());
+		update.bindString(7, n.getType());
+
+		update.bindBlob(8, AbstractNote.BitmapToBinary(n.getThumbnail()));
+		update.bindBlob(9, n.getContent());
 		
-		update.bindBlob(7, n.getThumbnail());
-		update.bindBlob(8, n.getContent());
-		
-		update.bindLong(9, n.getId());
+		update.bindLong(10, n.getId());
 		update.executeInsert();
 	}
 	
-	public ArrayList<INote> getNotes()
+	public ArrayList<AbstractNote> getNotes()
 	{
 		Cursor c= this.getReadableDatabase().rawQuery(SQLStatements.GET_ALL_NOTES, new String[] {});
 		
-		ArrayList<INote> notes = new ArrayList<INote> (s_note_counter);
+		ArrayList<AbstractNote> notes = new ArrayList<AbstractNote> (s_note_counter);
 		
 		while(c.moveToNext())
 		{
 			double r=c.getDouble(0);
+			Log.d("get",""+r);
 			double t=c.getDouble(1);
 			double z=c.getDouble(2);
 			double nx=c.getDouble(3);
@@ -113,5 +135,10 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		}
 		
 		return notes;
+	}
+	
+	public void debug(View view)
+	{
+		
 	}
 }

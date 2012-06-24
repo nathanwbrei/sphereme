@@ -1,19 +1,25 @@
 package com.theamrzone.android.sphereme;
 
-public class Note implements INote {
+import android.graphics.Bitmap;
+import android.util.Base64;
 
+public class Note extends AbstractNote {
+
+	private static final String STRING = "STRING";
+	private static final String IMAGE = "IMAGE";
+	
 	private final int id;
 	private double r;
 	private double t;
 	private double z;
 	private NormalVector n;
 	private String type;
-	private byte [] thumbnail;
+	private Bitmap thumbnail;
 	private byte [] content;
 
 	//RELIES ON THE FACT THAT THE DATABASE HAS ALREADY BEEN INITIATED
 	public Note(double r, double t, double z, double nx, double ny,
-			double nz, String type, byte[] thumbnail, byte[] content) {
+			double nz, String type, Bitmap thumbnail, byte[] content) {
 		
 		this.id=NoteDatabaseHelper.incrementCounter();
 		
@@ -41,7 +47,9 @@ public class Note implements INote {
 		this.z=z;
 		n= new NormalVector(nx,ny,nz);
 		this.type=type;
-		this.thumbnail=thumbnail;
+
+		this.thumbnail=AbstractNote.binaryToBitmap(thumbnail);
+		
 		this.content=content;
 		
 	}
@@ -73,12 +81,6 @@ public class Note implements INote {
 
 
 	@Override
-	public boolean save() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void setRTZ(double r, double t, double z) {
 		this.r=r;
 		this.z=z;
@@ -91,8 +93,9 @@ public class Note implements INote {
 	}
 
 	@Override
-	public void setType(String type) {
-		this.type=type;
+	public void setContent(String s) {
+		this.type=STRING;
+		this.content=Base64.decode(s, Base64.DEFAULT);
 	}
 
 	@Override
@@ -101,7 +104,7 @@ public class Note implements INote {
 	}
 
 	@Override
-	public byte[] getThumbnail() {
+	public Bitmap getThumbnail() {
 		return thumbnail;
 	}
 
@@ -116,5 +119,17 @@ public class Note implements INote {
 				", nz: " + n.getZ() +
 				", type: " + type +
 				", id: " + id;
+	}
+
+	@Override
+	public void setContent(Bitmap bmp) {
+		type=IMAGE;
+		content=AbstractNote.BitmapToBinary(bmp);
+	}
+	
+	@Override
+	public void setThumbnail(Bitmap bmp) {
+		this.thumbnail=bmp;
+		
 	}
 }
