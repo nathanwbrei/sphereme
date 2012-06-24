@@ -12,7 +12,7 @@ import android.view.View;
 public abstract class TapAndSensingActivity extends SensingActivity implements TapListener {
 
 	private Sensor linearAccelerationSensor;
-	private TapNotifier tapNotifier;
+	protected TapNotifier tapNotifier;
 	
 	/**
 	 * Use this instead of onCreate(Bundle) of Activity 

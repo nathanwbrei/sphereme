@@ -126,4 +126,8 @@ public class TapNotifier implements SensorEventListener, View.OnTouchListener {
 		maxAccelZ = (Math.abs(accelZ) > Math.abs(maxAccelZ)) ? accelZ : maxAccelZ;
 		maxAccel  = (Math.abs(totalAccel) > Math.abs(maxAccel)) ? totalAccel : maxAccel;
 	}
+	
+	public boolean isDown() {
+		return isDown;
+	}
 }

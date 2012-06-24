@@ -21,7 +21,6 @@ public class SpheremeActivity extends TapAndSensingActivity {
     public void onCreate(Bundle savedInstanceState) {
     	// DB
         dbHelper = NoteDatabaseHelper.getInstance(this);
-        dbHelper.flush();
         
     	// view
         worldView = new TextBasedWorldView(this);
@@ -67,13 +66,15 @@ public class SpheremeActivity extends TapAndSensingActivity {
 	
 	@Override
 	public void onSensorChanged(SensorInfo info) {
-		
-		worldView.theta = info.VisualColumn;
+		if (tapNotifier.isDown()) {
+			worldView.theta = info.VisualColumn;
+		}
 		
 		if (newNoteContent != null) {
 			saveNewNote(newNoteContent, info.VisualColumn);
 			newNoteContent = null;
 		}
+		
 		worldView.requestLayout();
 	}
 	
