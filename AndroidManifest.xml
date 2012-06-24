@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name=".SpheremeActivity"
+            android:name=".EditorActivity"
             android:label="@string/app_name" 
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
         
-        <!-- activity
-            android:name=".SpheremeActivity" /-->
+        <activity
+            android:name=".SpheremeActivity" />
     </application>
 
 </manifest>

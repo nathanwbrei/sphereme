@@ -18,9 +18,10 @@ public class SpheremeActivity extends TapAndSensingActivity {
     public void onCreate(Bundle savedInstanceState) {
     	// DB
         dbHelper = NoteDatabaseHelper.getInstance(this);
-        dbHelper.flush();
-
-    	
+        
+        // saving a new message thingy
+        saveNewMessageFromEditor();
+        
     	// view
         worldView = new TextBasedWorldView(this);
         generateNoteViews();
@@ -28,39 +29,22 @@ public class SpheremeActivity extends TapAndSensingActivity {
 	    
 	    // doing the tapping and the sensing thing
         super.onCreate(savedInstanceState, worldView);
-//        
-//        
-//        // saving a new message thingy
-//        saveNewMessageFromEditor();
-//        
-//        // trying to display all notes but it doesn't work yet.
-//        displayAllNotes();
     }
     
     private void generateNoteViews() {
-
-    	String[] notes = {"This is bucket 1!", "And this is bucket 2", "Now bucket 3"};
+    	List<AbstractNote> notes = dbHelper.getNotes();
+    	
     	double[] rs = {1,1,1};  // does nothing for now
     	double[] ts = {1,2,3};	// discrete buckets 1..30
     	double[] zs = {5,5,7};	// discrete buckets 0..10
     	
-    	for (int i=0;i<3;i++){
-    		Note note = new Note(rs[i], ts[i], zs[i], 0, 0, 0, 
-    				Note.STRING, AbstractNote.stringToBitmap(notes[i]), AbstractNote.stringToByte(notes[i]));
+    	for (int i=0;i< notes.size();i++){
+    		AbstractNote note = notes.get(i);
+    		note.setRTZ(rs[i], ts[i], zs[i]); 
     		NoteView noteView = new NoteView(this, note);
     		
     		worldView.addNoteView(noteView);
     	}
-    }
-    
-    private void displayAllNotes() {
-    	List<AbstractNote> notes = dbHelper.getNotes();
-    	// TODO
-    	String allNotes = "";
-    	for (AbstractNote note : notes) {
-    		allNotes += note.getId() + " " + AbstractNote.binaryToString(note.getContent()) + "\n";
-    	}
-    	hello.setText("Num notes: " + notes.size() + "\n" + allNotes);
     }
 
 	private void saveNewMessageFromEditor() {

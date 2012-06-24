@@ -6,9 +6,9 @@ import android.widget.TextView;
 
 public class NoteView extends TextView {
 
-	private Note note;
+	private AbstractNote note;
 	
-	public NoteView(Context context, Note note) {
+	public NoteView(Context context, AbstractNote note) {
 		super(context);
 		this.note = note;
 		
@@ -18,7 +18,7 @@ public class NoteView extends TextView {
 		setTypeface(Typeface.MONOSPACE);
 	}
 	
-	public Note getNote() {
+	public AbstractNote getNote() {
 		return note;
 	}
 }
