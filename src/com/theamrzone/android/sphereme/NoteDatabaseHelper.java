@@ -36,6 +36,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
     {
     	if (INSTANCE==null)
     	{
+    		Log.d("DB","Created a new instance of the database");
     		INSTANCE= new NoteDatabaseHelper(context);
     	}
     	
@@ -84,7 +85,9 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		add.bindBlob(9, n.getContent());
 		Log.d("DEBUG", "d");
 		add.bindLong(10, n.getId());
+		
 		add.executeInsert();
+		Log.d("DB","Added note "+ n.toString());
 	}
 	
 	public boolean existsNote(AbstractNote n)
@@ -118,6 +121,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		
 		update.bindLong(10, n.getId());
 		update.executeInsert();
+		Log.d("DB","Updated note "+ n.toString());
 	}
 	
 	public ArrayList<AbstractNote> getNotes()
@@ -143,11 +147,8 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 			notes.add(new Note(r,t,z,nx,ny,nz,type,thumbnail,content,id));		
 		}
 		
+		Log.d("DB","Retrieved "+notes.size() + " notes.");
 		return notes;
 	}
 	
-	public void debug(View view)
-	{
-		
-	}
 }
