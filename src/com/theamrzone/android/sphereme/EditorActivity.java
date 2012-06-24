@@ -20,7 +20,7 @@ public class EditorActivity extends Activity  {
 	public void sendMessage() {
 		String content = editBox.getText().toString();
 		Note note = new Note(0, 0, 0, 0, 0, 0, "text", null, content.getBytes());
-		note.save(NoteDatabaseHelper.getInstance(this));
+//		note.save(NoteDatabaseHelper.getInstance(this));
 		// TODO: goes to the world view to save instead. so line above is actually wrong.
 		
 		// TODO: go back to world view [with current location?]
