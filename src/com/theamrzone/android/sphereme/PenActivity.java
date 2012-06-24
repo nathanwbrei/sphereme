@@ -22,7 +22,7 @@ public class PenActivity extends Activity  {
 		msCanvas = (SCanvasView) findViewById(R.id.canvas_view);
 	}
 	
-	public void acquireImage(View view) {
+	public void exitAndCreateNewPenNote(View view) {
 		Intent intent = new Intent(this, SpheremeActivity.class);
 	    Bitmap b= msCanvas.getCanvasBitmap(true);
 	    intent.putExtra(NEW_IMAGE, b);

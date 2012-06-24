@@ -4,7 +4,21 @@
     android:layout_height="fill_parent"
     android:background="#ffffffff"
     android:orientation="vertical" >
-
+	
+    <LinearLayout
+        android:id="@+id/save_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        
+        <Button 
+        android:id="@+id/save_button" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:text="@string/pen_save"
+        android:onClick="exitAndCreateNewPenNote"/>
+        
+    </LinearLayout>
+    
     <RelativeLayout
         android:id="@+id/canvas_container"
         android:layout_width="wrap_content"
