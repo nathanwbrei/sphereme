@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.Base64;
+import android.util.Log;
 
 public abstract class AbstractNote {
 	
@@ -79,7 +80,15 @@ public abstract class AbstractNote {
 	
 	public static byte[] stringToByte(String s)
 	{
-		return Base64.decode(s, Base64.DEFAULT);
+		try
+		{
+			return Base64.decode(s, Base64.DEFAULT);
+		}
+		catch (IllegalArgumentException e)
+		{
+			Log.d("PADDING error:",s);
+			throw e;
+		}
 	}
 	
 	public static Bitmap stringToBitmap(String s) {
