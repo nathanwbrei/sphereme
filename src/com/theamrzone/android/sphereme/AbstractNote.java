@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 public abstract class AbstractNote {
 	
@@ -58,6 +59,14 @@ public abstract class AbstractNote {
 		return thumbnailArray;
 	}
 	
+	public static String BinaryToString(byte[] arr)
+	{
+		return Base64.encodeToString(arr, Base64.DEFAULT);
+	}
 	
+	public byte[] StringToByte(String s)
+	{
+		return Base64.decode(s, Base64.DEFAULT);
+	}
 	
 }
