@@ -79,7 +79,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 	public void flush()
 	{
 		Log.d("DB","FLUSHING DATABASE");
-		flush.executeUpdateDelete();
+		flush.execute();
 	}
 	public void addNote(AbstractNote n)
 	{
