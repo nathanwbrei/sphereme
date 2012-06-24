@@ -3,7 +3,6 @@ package com.theamrzone.android.sphereme;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -24,15 +23,12 @@ public class TextBasedWorldView extends RelativeLayout {
 		
 	public float maxZ = 10;  // bucket our Z as well
 	
-	private GradientDrawable gradient;
-	
 	private ArrayList<NoteView> noteViews;
 	
-	public TextBasedWorldView(Context context, NoteView nv){
+	public TextBasedWorldView(Context context){
 		super(context);
 		
 		noteViews = new ArrayList<NoteView>();
-		noteViews.add(nv);
 		generateNoteViews();
 	}
 	
@@ -57,7 +53,7 @@ public class TextBasedWorldView extends RelativeLayout {
 		
 		// Now we draw all of the strings which are in our bucket
 		for (int i=0;i<3;i++){
-			NoteView note = noteViews.get(i+1);
+			NoteView note = noteViews.get(i);
 			
 			if (ts[i] == (int) theta){  //if our test value matches our discretized azimuth
 				note.setVisibility(View.VISIBLE);
