@@ -12,6 +12,7 @@ public class TapNotifier implements SensorEventListener, View.OnTouchListener {
 	private long startHoldTime;
 	private long holdTime;
 	private boolean isDown;
+	private boolean firedHold;
 	private float x, y;
 	private float maxAccelX, maxAccelY, maxAccelZ, maxAccel;
 	private TapListener listener;
@@ -38,6 +39,9 @@ public class TapNotifier implements SensorEventListener, View.OnTouchListener {
 		case MotionEvent.ACTION_DOWN:
 			startDown();
 			break;
+		case MotionEvent.ACTION_MOVE:
+			midDown();
+			break;
 		case MotionEvent.ACTION_UP:
 			endDown();
 			break;
@@ -48,10 +52,27 @@ public class TapNotifier implements SensorEventListener, View.OnTouchListener {
 	private void startDown() {
 		startHoldTime = System.currentTimeMillis();
 		isDown = true;
+		firedHold = false;
 		maxAccelX = 0;
 		maxAccelY = 0;
 		maxAccelZ = 0;
 		maxAccel = 0;
+	}
+	
+	private void midDown() {
+		// Fire tapHold only if we haven't fired it already and 250 has passed
+		if (!firedHold) {
+			long currentHoldTime = System.currentTimeMillis() - startHoldTime;
+			
+			if (currentHoldTime >= 250) {
+				fireTapHoldStart();
+				firedHold = true;
+			}
+			
+		// if tapHold has been fired, just notify that we're currently moving around
+		} else { 
+			fireTapHoldMoving();
+		}
 	}
 	
 	private void endDown() {
@@ -64,22 +85,30 @@ public class TapNotifier implements SensorEventListener, View.OnTouchListener {
 		if (isDown) { return; } // too premature to determine what's goine on
 		
 		if (maxAccel > 8) {
-			fireTapAndMove();
+			fireTapHoldRelease();
 		} else if (holdTime < 250 && maxAccel < 4) {
 			fireTap();
 		} else if (holdTime >= 250 && maxAccel >= 4) {
-			fireTapAndMove();
+			fireTapHoldRelease();
 		} else if (holdTime < 150) {
 			fireTap();
 		}
 	}
 	
-	private void fireTapAndMove() {
-		listener.onTapAndMove(x, y);
-	}
-	
 	private void fireTap() {
 		listener.onTap(x, y);
+	}
+	
+	private void fireTapHoldStart() {
+		listener.onTapHold(x, y);
+	}
+	
+	private void fireTapHoldMoving() {
+		listener.onTapHoldMoving(x, y);
+	}
+	
+	private void fireTapHoldRelease() {
+		listener.onTapHoldRelease(x, y);
 	}
 	
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {}
