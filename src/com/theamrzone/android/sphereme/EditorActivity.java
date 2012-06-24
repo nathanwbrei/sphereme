@@ -18,12 +18,10 @@ public class EditorActivity extends Activity  {
 	}
 	
 	public void sendMessage() {
-		// TODO: save message
-		// 1: Get phone location on release
-		// 2: Get the contents
 		String content = editBox.getText().toString();
 		Note note = new Note(0, 0, 0, 0, 0, 0, "text", null, content.getBytes());
-		//note.save();
+		note.save(NoteDatabaseHelper.getInstance(this));
+		// TODO: goes to the world view to save instead. so line above is actually wrong.
 		
 		// TODO: go back to world view [with current location?]
 
