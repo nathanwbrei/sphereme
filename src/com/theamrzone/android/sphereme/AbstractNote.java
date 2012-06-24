@@ -10,6 +10,7 @@ import android.util.Base64;
 
 public abstract class AbstractNote {
 	
+	//is is unique, hence no setter, calculated form max in database +1
 	public abstract int getId();
 
 	public abstract double getR();
@@ -27,6 +28,7 @@ public abstract class AbstractNote {
 	public abstract byte[] getContent();
 	public abstract Bitmap getThumbnail();
 	
+	//must give it a database instance
 	public void save(NoteDatabaseHelper h)
 	{
 		h.updateNote(this);
@@ -40,7 +42,8 @@ public abstract class AbstractNote {
         return BitmapFactory.decodeStream(imageStream);
 	}
 	
-	public static byte[] BitmapToBinary(Bitmap bmp)
+	// converts a bmp to byte[]
+	public static byte[] bitmapToBinary(Bitmap bmp)
 	{
 		int size = bmp.getRowBytes() * bmp.getHeight();
 		ByteBuffer b = ByteBuffer.allocate(size);
@@ -59,12 +62,12 @@ public abstract class AbstractNote {
 		return thumbnailArray;
 	}
 	
-	public static String BinaryToString(byte[] arr)
+	public static String binaryToString(byte[] arr)
 	{
 		return Base64.encodeToString(arr, Base64.DEFAULT);
 	}
 	
-	public byte[] StringToByte(String s)
+	public static byte[] stringToByte(String s)
 	{
 		return Base64.decode(s, Base64.DEFAULT);
 	}

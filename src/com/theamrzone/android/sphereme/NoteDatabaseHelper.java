@@ -78,7 +78,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		Log.d("DEBUG", "c");
 		
 
-		add.bindBlob(8, AbstractNote.BitmapToBinary(n.getThumbnail()));
+		add.bindBlob(8, AbstractNote.bitmapToBinary(n.getThumbnail()));
 		add.bindBlob(9, n.getContent());
 		Log.d("DEBUG", "d");
 		add.bindLong(10, n.getId());
@@ -104,7 +104,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		
 		update.bindString(7, n.getType());
 
-		update.bindBlob(8, AbstractNote.BitmapToBinary(n.getThumbnail()));
+		update.bindBlob(8, AbstractNote.bitmapToBinary(n.getThumbnail()));
 		update.bindBlob(9, n.getContent());
 		
 		update.bindLong(10, n.getId());

@@ -95,7 +95,7 @@ public class Note extends AbstractNote {
 	@Override
 	public void setContent(String s) {
 		this.type=STRING;
-		this.content=Base64.decode(s, Base64.DEFAULT);
+		this.content=AbstractNote.stringToByte(s);
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class Note extends AbstractNote {
 	@Override
 	public void setContent(Bitmap bmp) {
 		type=IMAGE;
-		content=AbstractNote.BitmapToBinary(bmp);
+		content=AbstractNote.bitmapToBinary(bmp);
 	}
 	
 	@Override
