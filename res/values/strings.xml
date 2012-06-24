@@ -3,5 +3,7 @@
 
     <string name="hello">Hello World, SpheremeActivity!</string>
     <string name="app_name">Sphereme</string>
-
+    
+    <string name="editor_begin">Begin typing...</string>
+	<string name="editor_save">Save</string>
 </resources>

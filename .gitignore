@@ -6,6 +6,7 @@
 .project
 .metadata
 bin/
+src/com/theamrzone/android/sphereme/test/
 tmp/
 *.tmp
 *.bak
