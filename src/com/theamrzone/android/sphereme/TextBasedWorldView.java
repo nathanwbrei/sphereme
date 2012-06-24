@@ -3,6 +3,8 @@ package com.theamrzone.android.sphereme;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -20,6 +22,8 @@ public class TextBasedWorldView extends RelativeLayout {
 	public float maxZ = 10;  // bucket our Z as well
 	
 	private ArrayList<NoteView> noteViews;
+	private GradientDrawable gradient;
+
 	
 	public TextBasedWorldView(Context context){
 		super(context);
@@ -40,6 +44,16 @@ public class TextBasedWorldView extends RelativeLayout {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		
+		// Responsive gradient background. Is the gradient object even mutable?
+		// HSV wants: h=[0,360); s=[0,1]; v=[0,1]
+		float[] hsv = {theta*12, 0.7f, 0.5f};
+		
+		int[] gradcolors = {Color.HSVToColor(hsv), Color.BLACK};
+        gradient = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradcolors);
+        gradient.setBounds(0,0,maxX, maxY);
+        this.setBackgroundDrawable(gradient);
+		
 		// Now we draw all of the strings which are in our bucket
 		for (int i=0; i<noteViews.size(); i++){
 			NoteView noteView = noteViews.get(i);
