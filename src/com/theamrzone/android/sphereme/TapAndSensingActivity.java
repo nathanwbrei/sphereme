@@ -1,6 +1,5 @@
 package com.theamrzone.android.sphereme;
 
-import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -10,35 +9,33 @@ import android.view.View;
  * Extend this if you want some tap action! Fires (one) listener on "tap" and on "tap and hold" 
  * @author Katherine
  */
-public abstract class TapNotifiedActivity extends Activity implements TapListener {
+public abstract class TapAndSensingActivity extends SensingActivity implements TapListener {
 
-	private SensorManager manager;
 	private Sensor linearAccelerationSensor;
 	private TapNotifier tapNotifier;
 	
 	/**
 	 * Use this instead of onCreate(Bundle) of Activity 
 	 * @param savedInstanceState
-	 * @param view
+	 * @param view The view you want to listen for taps on
 	 */
 	public void onCreate(Bundle savedInstanceState, View view) {
 		super.onCreate(savedInstanceState);
-		tapNotifier = new TapNotifier(this); 
-		manager = (SensorManager) getSystemService(SENSOR_SERVICE);
-		linearAccelerationSensor = manager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+		tapNotifier = new TapNotifier(this);
+		linearAccelerationSensor = sensorInfo.mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 		view.setOnTouchListener(tapNotifier);
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
-		manager.unregisterListener(tapNotifier);
+		sensorInfo.mSensorManager.unregisterListener(tapNotifier);
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		manager.registerListener(tapNotifier, linearAccelerationSensor, 
+		sensorInfo.mSensorManager.registerListener(tapNotifier, linearAccelerationSensor, 
 				SensorManager.SENSOR_DELAY_UI);
 	}
 

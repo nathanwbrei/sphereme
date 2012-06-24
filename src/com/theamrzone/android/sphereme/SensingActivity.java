@@ -3,13 +3,12 @@ package com.theamrzone.android.sphereme;
 import android.app.Activity;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.widget.TextView;
 
 public abstract class SensingActivity extends Activity implements SensorListener {
 
-	private SensorInfo sensorInfo;
+	protected SensorInfo sensorInfo;
 	
-	public void onCreate(Bundle savedInstanceState, TextView view) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		sensorInfo = new SensorInfo(this);
 	}

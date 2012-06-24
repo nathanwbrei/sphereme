@@ -34,7 +34,7 @@ public class SensorInfo extends ContextWrapper implements SensorEventListener {
 								// 6 degrees to the right of center and 6 degrees to the left lies "1", the front.
 							  //From 6 degrees to the right to 18 degrees to the right is "2", 18 to 30 degrees "3". From left 18 degrees
 								// to left 6 degrees is bucket "30".
-	private int numVC = 30; // Change this to increase or decrease number of VCs (columns, buckets).  More means can fit more icons in
+	private int numVC = 4; // Change this to increase or decrease number of VCs (columns, buckets).  More means can fit more icons in
 										// physical space but more jumpiness / calibration / noise filtering required.
 	
 	private SensorListener listener;
