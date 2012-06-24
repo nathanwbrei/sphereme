@@ -48,6 +48,8 @@ public class FlatCompassActivity extends Activity implements SensorEventListener
         //Return the orientation values
         float[] values = new float[3];
         SensorManager.getOrientation(R, values);
+        valueView.setText(String.format("Azimuth: %1$1.2f, Pitch: %2$1.2f, Roll: %3$1.2f",
+                values[0], values[1], values[2]));
         //Convert to degrees
         for (int i=0; i < values.length; i++) {
             Double degrees = (values[i] * 180) / Math.PI;
@@ -56,8 +58,8 @@ public class FlatCompassActivity extends Activity implements SensorEventListener
         //Display the compass direction
         directionView.setText( getDirectionFromDegrees(values[0]) );
         //Display the raw values
-        valueView.setText(String.format("Azimuth: %1$1.2f, Pitch: %2$1.2f, Roll: %3$1.2f",
-                values[0], values[1], values[2]));
+//        valueView.setText(String.format("Azimuth: %1$1.2f, Pitch: %2$1.2f, Roll: %3$1.2f",
+//                values[0], values[1], values[2]));
     }
     
     private String getDirectionFromDegrees(float degrees) {
