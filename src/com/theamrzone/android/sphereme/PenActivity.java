@@ -24,8 +24,11 @@ public class PenActivity extends Activity  {
 	
 	public void exitAndCreateNewPenNote(View view) {
 		Intent intent = new Intent(this, SpheremeActivity.class);
-	    Bitmap b= msCanvas.getCanvasBitmap(true);
-	    intent.putExtra(NEW_IMAGE, b);
+	    Bitmap b = msCanvas.getCanvasBitmap(true);
+		int width = 200;
+		int height = (int) ((200.0/b.getWidth()) * b.getHeight());
+		b = Bitmap.createScaledBitmap(b, width, height, true);
+	    intent.putExtra(NEW_IMAGE, Note.bitmapToBinary(b));
 	    startActivity(intent);
 	}
 	

@@ -34,8 +34,10 @@ public abstract class AbstractNote {
 	//must give it a database instance
 	public void save(NoteDatabaseHelper h)
 	{
+		Log.d("NOTE", "Save called");
 		if(h.existsNote(this))
 		{
+			Log.d("NOTE","Note already exists..");
 			h.updateNote(this);
 		}
 		else
