@@ -18,13 +18,18 @@ public class EditorActivity extends Activity  {
 	}
 	
 	public void sendMessage() {
+		// TODO: save message
+		// 1: Get phone location on release
+		// 2: Get the contents
+		String content = editBox.getText().toString();
+		Note note = new Note(0, 0, 0, 0, 0, 0, "text", null, content.getBytes());
+		note.save();
+		
+		// TODO: go back to world view [with current location?]
+
 //		Intent intent = new Intent(this, DisplayMessageActivity.class);
 //	    String message = editBox.getText().toString();
 //	    intent.putExtra(EXTRA_MESSAGE, message);
 //	    startActivity(intent);
-		
-		// TODO: save message
-		
-		// TODO: go back to world view
 	}
 }
