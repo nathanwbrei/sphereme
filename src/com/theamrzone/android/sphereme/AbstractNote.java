@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.util.Base64;
 import android.util.Log;
 
 public abstract class AbstractNote {
@@ -75,20 +74,14 @@ public abstract class AbstractNote {
 	
 	public static String binaryToString(byte[] arr)
 	{
-		return Base64.encodeToString(arr, Base64.DEFAULT);
+		return new String(arr);
 	}
 	
 	public static byte[] stringToByte(String s)
 	{
-		try
-		{
-			return Base64.decode(s, Base64.DEFAULT);
-		}
-		catch (IllegalArgumentException e)
-		{
-			Log.d("PADDING error:",s);
-			throw e;
-		}
+		Log.d("NOTE","Trying to convert to byte[]: "+s);
+		
+		return s.getBytes();
 	}
 	
 	public static Bitmap stringToBitmap(String s) {

@@ -24,4 +24,6 @@ public class SQLStatements {
     static final String UPDATE_NOTE = "UPDATE notes set r=?,t=?,z=?,nx=?,ny=?,nz=?, type=?, thumbnail=?, content=? where _id=?";
     static final String GET_ALL_NOTES = "SELECT r,t,z,nx,ny,nz,type,thumbnail,content,_id FROM notes";
     static final String GET_COUNTER = "SELECT COALESCE(MAX(_id)+1,0) FROM notes";
+    static final String DELETE_NOTE = "DELETE FROM notes where _id=?";
+    static final String FLUSH_DATABASE = "DELETE FROM notes";
 }

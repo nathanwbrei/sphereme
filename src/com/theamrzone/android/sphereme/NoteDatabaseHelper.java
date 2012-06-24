@@ -20,6 +20,8 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
     private SQLiteStatement update;
     private SQLiteStatement add;
     private SQLiteStatement exist;
+    private SQLiteStatement delete;
+    private SQLiteStatement flush;
     
     private NoteDatabaseHelper(Context context) {
         super(context, SQLStatements.DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,6 +32,8 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
         update=this.getWritableDatabase().compileStatement(SQLStatements.UPDATE_NOTE);
         add= this.getWritableDatabase().compileStatement(SQLStatements.INSERT_NOTE);
         exist= this.getReadableDatabase().compileStatement(SQLStatements.GET_NOTE_EXISTS);
+        delete= this.getWritableDatabase().compileStatement(SQLStatements.DELETE_NOTE);
+        flush= this.getWritableDatabase().compileStatement(SQLStatements.FLUSH_DATABASE);
     }
 
     public static NoteDatabaseHelper getInstance(Context context)
@@ -65,6 +69,18 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		return i;
 	}
 	
+	public void deleteNote(AbstractNote n)
+	{
+		delete.clearBindings();
+		delete.bindLong(1,n.getId());
+		delete.executeUpdateDelete();
+	}
+	
+	public void flush()
+	{
+		Log.d("DB","FLUSHING DATABASE");
+		flush.executeUpdateDelete();
+	}
 	public void addNote(AbstractNote n)
 	{
 		add.clearBindings();
