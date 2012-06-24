@@ -15,24 +15,27 @@ public final class R {
         public static final int roundbutton=0x7f020001;
     }
     public static final class id {
-        public static final int action=0x7f05000c;
-        public static final int edit_box=0x7f050001;
-        public static final int editor_layout=0x7f050000;
-        public static final int event=0x7f050004;
-        public static final int max_accel=0x7f05000b;
-        public static final int max_x=0x7f050008;
-        public static final int max_y=0x7f050009;
-        public static final int max_z=0x7f05000a;
-        public static final int save_button=0x7f050002;
-        public static final int tap_layout=0x7f050003;
-        public static final int time=0x7f050005;
-        public static final int x=0x7f050006;
-        public static final int y=0x7f050007;
+        public static final int action=0x7f05000e;
+        public static final int direction=0x7f050000;
+        public static final int edit_box=0x7f050003;
+        public static final int editor_layout=0x7f050002;
+        public static final int event=0x7f050006;
+        public static final int max_accel=0x7f05000d;
+        public static final int max_x=0x7f05000a;
+        public static final int max_y=0x7f05000b;
+        public static final int max_z=0x7f05000c;
+        public static final int save_button=0x7f050004;
+        public static final int tap_layout=0x7f050005;
+        public static final int time=0x7f050007;
+        public static final int values=0x7f050001;
+        public static final int x=0x7f050008;
+        public static final int y=0x7f050009;
     }
     public static final class layout {
-        public static final int editor=0x7f030000;
-        public static final int main=0x7f030001;
-        public static final int tap=0x7f030002;
+        public static final int compass=0x7f030000;
+        public static final int editor=0x7f030001;
+        public static final int main=0x7f030002;
+        public static final int tap=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f040001;
