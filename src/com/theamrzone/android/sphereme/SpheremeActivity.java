@@ -18,7 +18,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
     public void onCreate(Bundle savedInstanceState) {
     	// DB
         dbHelper = NoteDatabaseHelper.getInstance(this);
-//        dbHelper.flush();
+        dbHelper.flush();
 
     	
     	// view
@@ -49,7 +49,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
     				Note.STRING, AbstractNote.stringToBitmap(notes[i]), AbstractNote.stringToByte(notes[i]));
     		NoteView noteView = new NoteView(this, note);
     		
-//    		worldView.addNoteView(noteView);
+    		worldView.addNoteView(noteView);
     	}
     }
     

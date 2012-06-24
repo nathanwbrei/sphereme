@@ -32,8 +32,8 @@ public class TextBasedWorldView extends RelativeLayout {
 
 		RelativeLayout.LayoutParams params = 
 				new RelativeLayout.LayoutParams(150, 150);
-		params.leftMargin = 100 * (int) nv.getNote().getT(); // 100+(i+1)*30; //maxX/5;
-		params.topMargin = 100 * (int) nv.getNote().getZ(); // 100+(i+1)*30; // zs[i]*maxY/5;
+		params.leftMargin = 50 * (int) nv.getNote().getT(); // 100+(i+1)*30; //maxX/5;
+		params.topMargin = 10 * (int) nv.getNote().getZ(); // 100+(i+1)*30; // zs[i]*maxY/5;
 		
 		addView(nv, params);
 	}
