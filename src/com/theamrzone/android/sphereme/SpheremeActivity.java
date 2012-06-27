@@ -71,7 +71,9 @@ public class SpheremeActivity extends TapAndSensingActivity {
 		}
 		
 		if (newNoteContent != null) {
-			saveNewNote(newNoteContent, info.VisualColumn);
+			if (newNoteContent.length() > 0) {
+				saveNewNote(newNoteContent, info.VisualColumn);
+			}
 			newNoteContent = null;
 		}
 		
