@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, SpheremeActivity!</string>
-    <string name="app_name">Sphereme</string>
+    <string name="hello">Hello World, ThoughtPod!</string>
+    <string name="app_name">ThoughtPod</string>
     
     <string name="editor_begin">Begin typing...</string>
 	<string name="editor_save">Save</string>
+	<string name="pen_save">Save! -- Samsung Developers are awesome!)</string>
 </resources>

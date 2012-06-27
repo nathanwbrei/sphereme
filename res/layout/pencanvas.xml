@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/save_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="exitAndCreateNewPenNote"
+            android:text="@string/pen_save" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/canvas_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <com.samsung.spensdk.SCanvasView
+            android:id="@+id/canvas_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

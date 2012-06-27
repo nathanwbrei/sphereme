@@ -73,7 +73,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 	{
 		delete.clearBindings();
 		delete.bindLong(1,n.getId());
-		delete.executeUpdateDelete();
+		delete.execute();
 	}
 	
 	public void flush()

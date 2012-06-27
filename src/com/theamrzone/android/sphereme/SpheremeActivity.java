@@ -3,6 +3,7 @@ package com.theamrzone.android.sphereme;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
 	private NoteDatabaseHelper dbHelper;
 	
 	private String newNoteContent;
+	private byte[] newImageContent;
 	
     /** Called when the activity is first created. */
     @Override
@@ -29,9 +31,10 @@ public class SpheremeActivity extends TapAndSensingActivity {
 	    
 	    // doing the tapping and the sensing thing
         super.onCreate(savedInstanceState, worldView);
-        
+        Log.d("NOTE", "we are here");
         // saving a new message thingy
         saveNewMessageFromEditor();
+        saveNewImageFromEditor();
     }
     
     private void generateNoteViews() {
@@ -52,6 +55,11 @@ public class SpheremeActivity extends TapAndSensingActivity {
         newNoteContent = intent.getStringExtra(EditorActivity.NEW_NOTE);
 	}
 	
+    private void saveNewImageFromEditor() {
+    	Intent intent = getIntent();
+    	newImageContent = intent.getByteArrayExtra(PenActivity.NEW_IMAGE);
+    }
+	
 	private void saveNewNote(String newContent, double theta) {
 		Log.d("SpheremeActivty", "Creatng new content: " + newContent);
 		Note note = new Note(0, theta, 0, 0, 0, 0, 
@@ -64,17 +72,37 @@ public class SpheremeActivity extends TapAndSensingActivity {
 		worldView.addNoteView(noteView);
 	}
 	
+	private void saveNewNote(byte[] newContent, double theta) {
+		Log.d("SpheremeActivity", "creating new bitmap content");
+		Note note = new Note(0, theta, 0, 0, 0, 0,
+				Note.IMAGE,
+				Note.binaryToBitmap(newContent),
+				newContent);
+		note.save(dbHelper);
+		
+		NoteView noteView = new NoteView(this, note);
+		worldView.addNoteView(noteView);
+	}
+	
 	@Override
 	public void onSensorChanged(SensorInfo info) {
+		int vc = info.VisualColumn;
+		vc = 1;
+		Log.d("lol", "are we being called");
 		if (tapNotifier.isDown()) {
-			worldView.theta = info.VisualColumn;
+			worldView.theta = vc;
 		}
 		
 		if (newNoteContent != null) {
 			if (newNoteContent.length() > 0) {
-				saveNewNote(newNoteContent, info.VisualColumn);
+				saveNewNote(newNoteContent, vc);
 			}
 			newNoteContent = null;
+		}
+		
+		if (newImageContent != null) {
+			saveNewNote(newImageContent, vc);
+			newImageContent = null;
 		}
 		
 		worldView.requestLayout();

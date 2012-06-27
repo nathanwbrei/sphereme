@@ -2,6 +2,7 @@ package com.theamrzone.android.sphereme;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.widget.TextView;
 
 public class NoteView extends TextView {
@@ -12,10 +13,15 @@ public class NoteView extends TextView {
 		super(context);
 		this.note = note;
 		
-		setText(AbstractNote.binaryToString(note.getContent()));
-		setBackgroundResource(R.drawable.note);
-		setTextColor(context.getResources().getColor(R.color.virtual_blue));
-		setTypeface(Typeface.MONOSPACE);
+		if (note.getType() == Note.STRING) {
+			setText(AbstractNote.binaryToString(note.getContent()));
+			setBackgroundResource(R.drawable.note);
+			setTextColor(context.getResources().getColor(R.color.virtual_blue));
+			setTypeface(Typeface.MONOSPACE);
+		} else {
+			BitmapDrawable bd = new BitmapDrawable(AbstractNote.binaryToBitmap(note.getContent()));
+			setBackgroundDrawable(bd);
+		}
 	}
 	
 	public AbstractNote getNote() {
