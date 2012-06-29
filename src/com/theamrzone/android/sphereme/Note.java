@@ -95,7 +95,7 @@ public class Note extends AbstractNote {
 	public void setContent(String s) {
 		this.type=STRING;
 		this.content=Note.stringToByte(s);
-		setThumbnail(Note.generateThumbnail(this.content));
+		setThumbnail(Note.generateThumbnail(s));
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class Note extends AbstractNote {
 	public void setContent(Bitmap bmp) {
 		type=IMAGE;
 		content=AbstractNote.bitmapToBinary(bmp);
-		this.thumbnail=Note.generateThumbnail(content);
+		this.thumbnail=Note.generateThumbnail(bmp);
 	}
 
 	@Override

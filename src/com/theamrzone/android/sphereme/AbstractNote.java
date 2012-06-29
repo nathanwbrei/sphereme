@@ -112,10 +112,9 @@ public abstract class AbstractNote {
 		return Bitmap.createScaledBitmap(b, N_THUMB_WIDTH, N_THUMB_HEIGHT, false);
 	}
 
-	public static Bitmap generateThumbnail(byte [] arr)
+	public static Bitmap generateThumbnail(String s)
 	{
-		Bitmap b= Note.binaryToBitmap(arr);
-		return generateThumbnail(b);
+		return generateThumbnail(stringToBitmap(s));
 	}
 
 }
