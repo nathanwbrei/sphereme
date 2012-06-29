@@ -12,7 +12,10 @@ import android.graphics.Paint.Style;
 import android.util.Log;
 
 public abstract class AbstractNote {
-	
+
+	public static final int N_THUMB_WIDTH=100;
+	public static final int N_THUMB_HEIGHT=100;
+
 	//is is unique, hence no setter, calculated form max in database +1
 	public abstract int getId();
 
@@ -21,13 +24,15 @@ public abstract class AbstractNote {
 	public abstract double getT();
 
 	public abstract NormalVector getNormalVector();
-	
+
 	public abstract String getType();
 	public abstract void setContent(String s);
 	public abstract void setContent(Bitmap b);
-	
+
+	//Don't call directly unless you need to
+	//Automatically gets called if you call setContent()
 	public abstract void setThumbnail(Bitmap b);
-	
+
 	public abstract byte[] getContent();
 	public abstract Bitmap getThumbnail();
 
@@ -45,24 +50,24 @@ public abstract class AbstractNote {
 			h.addNote(this);
 		}
 	}
-	
+
 	public abstract void setRTZ(double r, double t, double z);
-	
+
 	public static Bitmap binaryToBitmap(byte[] input)
 	{
 		ByteArrayInputStream imageStream = new ByteArrayInputStream(input);
         return BitmapFactory.decodeStream(imageStream);
 	}
-	
+
 	// converts a bmp to byte[]
 	public static byte[] bitmapToBinary(Bitmap bmp)
 	{
 		int size = bmp.getRowBytes() * bmp.getHeight();
 		ByteBuffer b = ByteBuffer.allocate(size);
 		bmp.copyPixelsToBuffer(b);
-		
+
 		byte [] thumbnailArray = new byte[size];
-		
+
 		try {
 		    b.get(thumbnailArray, 0, thumbnailArray.length);
 		}
@@ -70,22 +75,22 @@ public abstract class AbstractNote {
 		{
 		    //always happens
 		}
-		
+
 		return thumbnailArray;
 	}
-	
+
 	public static String binaryToString(byte[] arr)
 	{
 		return new String(arr);
 	}
-	
+
 	public static byte[] stringToByte(String s)
 	{
 		Log.d("NOTE","Trying to convert to byte[]: "+s);
-		
+
 		return s.getBytes();
 	}
-	
+
 	public static Bitmap stringToBitmap(String s) {
 		int w = 100, h = 100;
 		Paint paint = new Paint();
@@ -93,12 +98,24 @@ public abstract class AbstractNote {
 		paint.setStyle(Style.STROKE);
 		paint.setStrokeWidth(2);
 		paint.setAntiAlias(true);
-		
+
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
 		Bitmap bmp = Bitmap.createBitmap(w, h, conf); // this creates a MUTABLE bitmap
 		Canvas c = new Canvas(bmp);
 		c.drawText(s, 0, 0, paint);
-		
+
 		return bmp;
 	}
+
+	public static Bitmap generateThumbnail(Bitmap b)
+	{
+		return Bitmap.createScaledBitmap(b, N_THUMB_WIDTH, N_THUMB_HEIGHT, false);
+	}
+
+	public static Bitmap generateThumbnail(byte [] arr)
+	{
+		Bitmap b= Note.binaryToBitmap(arr);
+		return generateThumbnail(b);
+	}
+
 }

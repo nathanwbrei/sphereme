@@ -6,7 +6,7 @@ public class Note extends AbstractNote {
 
 	public static final String STRING = "STRING";
 	public static final String IMAGE = "IMAGE";
-	
+
 	private final int id;
 	private double r;
 	private double t;
@@ -19,9 +19,9 @@ public class Note extends AbstractNote {
 	//RELIES ON THE FACT THAT THE DATABASE HAS ALREADY BEEN INITIATED
 	public Note(double r, double t, double z, double nx, double ny,
 			double nz, String type, Bitmap thumbnail, byte[] content) {
-		
+
 		this.id=NoteDatabaseHelper.incrementCounter();
-		
+
 		if (id<0)
 		{
 			throw new RuntimeException("Database has not been setup. Cannot create a note before init'ing db");
@@ -33,13 +33,13 @@ public class Note extends AbstractNote {
 		this.type=type;
 		this.thumbnail=thumbnail;
 		this.content=content;
-		
+
 	}
-	
+
 	// SHOULD ONLY BE CALLED BY NOTEDATEBASEHELPER
 	public Note(double r, double t, double z, double nx, double ny,
 			double nz, String type, byte[] thumbnail, byte[] content, int id) {
-		
+
 		this.id=id;
 		this.r=r;
 		this.t=t;
@@ -48,9 +48,9 @@ public class Note extends AbstractNote {
 		this.type=type;
 
 		this.thumbnail=AbstractNote.binaryToBitmap(thumbnail);
-		
+
 		this.content=content;
-		
+
 	}
 
 	@Override
@@ -94,7 +94,8 @@ public class Note extends AbstractNote {
 	@Override
 	public void setContent(String s) {
 		this.type=STRING;
-		this.content=AbstractNote.stringToByte(s);
+		this.content=Note.stringToByte(s);
+		setThumbnail(Note.generateThumbnail(this.content));
 	}
 
 	@Override
@@ -124,11 +125,12 @@ public class Note extends AbstractNote {
 	public void setContent(Bitmap bmp) {
 		type=IMAGE;
 		content=AbstractNote.bitmapToBinary(bmp);
+		this.thumbnail=Note.generateThumbnail(content);
 	}
-	
+
 	@Override
 	public void setThumbnail(Bitmap bmp) {
 		this.thumbnail=bmp;
-		
+
 	}
 }
