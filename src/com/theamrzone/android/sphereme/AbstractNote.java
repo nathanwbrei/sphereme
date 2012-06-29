@@ -13,6 +13,9 @@ import android.util.Log;
 
 public abstract class AbstractNote {
 	
+	public static final int N_THUMB_WIDTH=100;
+	public static final int N_THUMB_HEIGHT=100;
+	
 	//is is unique, hence no setter, calculated form max in database +1
 	public abstract int getId();
 
@@ -26,6 +29,8 @@ public abstract class AbstractNote {
 	public abstract void setContent(String s);
 	public abstract void setContent(Bitmap b);
 	
+	//Don't call directly unless you need to
+	//Automatically gets called if you call setContent()
 	public abstract void setThumbnail(Bitmap b);
 	
 	public abstract byte[] getContent();
@@ -101,4 +106,16 @@ public abstract class AbstractNote {
 		
 		return bmp;
 	}
+	
+	public static Bitmap generateThumbnail(Bitmap b)
+	{
+		return Bitmap.createScaledBitmap(b, N_THUMB_WIDTH, N_THUMB_HEIGHT, false);
+	}
+	
+	public static Bitmap generateThumbnail(byte [] arr)
+	{
+		Bitmap b= Note.binaryToBitmap(arr);
+		return generateThumbnail(b);
+	}
+	
 }
