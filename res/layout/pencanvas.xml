@@ -5,27 +5,17 @@
     android:background="#ffffffff"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/save_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+    <com.samsung.spensdk.SCanvasView
+		android:id="@+id/canvas_view"
+		android:layout_width="fill_parent"
+		android:layout_weight="1"
+		android:layout_height="0dp" 
+		android:gravity="top"/>
 
-        <Button
-            android:id="@+id/save_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:onClick="exitAndCreateNewPenNote"
-            android:text="@string/pen_save" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/canvas_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <com.samsung.spensdk.SCanvasView
-            android:id="@+id/canvas_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+	<Button
+		android:id="@+id/save_button"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/pen_save" 
+		android:onClick="exitAndCreateNewPenNote" />
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.sensing;
 
 /**
  * Listens for tap data.  The input to functions is where the user taps on the screen.

@@ -1,30 +1,20 @@
 package com.theamrzone.android.sphereme;
 
+import com.theamrzone.android.sphereme.model.AbstractNote;
+import com.theamrzone.android.sphereme.model.Note;
+import com.theamrzone.android.sphereme.view.INoteView;
+import com.theamrzone.android.sphereme.view.ImageNoteView;
+import com.theamrzone.android.sphereme.view.TextNoteView;
+
 import android.content.Context;
-import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.widget.TextView;
 
-public class NoteView extends TextView {
-
-	private AbstractNote note;
-	
-	public NoteView(Context context, AbstractNote note) {
-		super(context);
-		this.note = note;
-		
+public class NoteView {
+	public static INoteView createNoteView(Context context, AbstractNote note) {
 		if (note.getType() == Note.STRING) {
-			setText(AbstractNote.binaryToString(note.getContent()));
-			setBackgroundResource(R.drawable.note);
-			setTextColor(context.getResources().getColor(R.color.virtual_blue));
-			setTypeface(Typeface.MONOSPACE);
-		} else {
-			BitmapDrawable bd = new BitmapDrawable(AbstractNote.binaryToBitmap(note.getContent()));
-			setBackgroundDrawable(bd);
+			return new TextNoteView(context, note);
+		} else if (note.getType() == Note.IMAGE) {
+			return new ImageNoteView(context, note);
 		}
-	}
-	
-	public AbstractNote getNote() {
-		return note;
+		return null;
 	}
 }

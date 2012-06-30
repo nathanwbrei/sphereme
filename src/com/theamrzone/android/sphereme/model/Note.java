@@ -1,4 +1,6 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.model;
+
+import com.theamrzone.android.sphereme.NormalVector;
 
 import android.graphics.Bitmap;
 

@@ -3,16 +3,24 @@ package com.theamrzone.android.sphereme;
 import java.util.List;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.theamrzone.android.sphereme.activity.Main;
+import com.theamrzone.android.sphereme.model.AbstractNote;
+import com.theamrzone.android.sphereme.model.Note;
+import com.theamrzone.android.sphereme.model.NoteDatabaseHelper;
+import com.theamrzone.android.sphereme.sensing.SensorInfo;
+import com.theamrzone.android.sphereme.sensing.TapAndSensingActivity;
+import com.theamrzone.android.sphereme.view.TextNoteView;
+import com.theamrzone.android.sphereme.view.WorldView200;
 
 public class SpheremeActivity extends TapAndSensingActivity {
 	
 	private TextView hello;
 	
-	private TextBasedWorldView worldView;
+	private WorldView200 worldView;
 	private NoteDatabaseHelper dbHelper;
 	
 	private String newNoteContent;
@@ -25,7 +33,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
         dbHelper = NoteDatabaseHelper.getInstance(this);
         
     	// view
-        worldView = new TextBasedWorldView(this);
+        // OworldView = new WorldView(this);
         generateNoteViews();
         setContentView(worldView);
 	    
@@ -43,7 +51,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
     	for (int i=0;i< notes.size();i++){
     		AbstractNote note = notes.get(i);
     		note.setRTZ(0, note.getT(), 3); 
-    		NoteView noteView = new NoteView(this, note);
+    		TextNoteView noteView = new TextNoteView(this, note);
     		
     		worldView.addNoteView(noteView);
     	}
@@ -52,7 +60,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
 	private void saveNewMessageFromEditor() {
 		// Get the message from the Editor intent
         Intent intent = getIntent();
-        newNoteContent = intent.getStringExtra(EditorActivity.NEW_NOTE);
+        newNoteContent = intent.getStringExtra(Main.NOTE_TEXT);
 	}
 	
     private void saveNewImageFromEditor() {
@@ -68,7 +76,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
 				Note.stringToByte(newContent));  // generate byte content from string 
 		note.save(dbHelper); 
 		
-		NoteView noteView = new NoteView(this, note);
+		TextNoteView noteView = new TextNoteView(this, note);
 		worldView.addNoteView(noteView);
 	}
 	
@@ -80,7 +88,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
 				newContent);
 		note.save(dbHelper);
 		
-		NoteView noteView = new NoteView(this, note);
+		TextNoteView noteView = new TextNoteView(this, note);
 		worldView.addNoteView(noteView);
 	}
 	
@@ -90,7 +98,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
 		vc = 1;
 		Log.d("lol", "are we being called");
 		if (tapNotifier.isDown()) {
-			worldView.theta = vc;
+			// worldView.theta = vc;
 		}
 		
 		if (newNoteContent != null) {
@@ -112,5 +120,15 @@ public class SpheremeActivity extends TapAndSensingActivity {
 	public void onTap(float x, float y) {
 		// TODO: Figure out what was tapped
 		// TODO: Go to editor mode
+	}
+	
+	@Override
+	public void onStop() {
+		Log.d("ThoughtPod", "Stopped");
+	}
+	
+	@Override
+	public void onDestroy() {
+		Log.d("ThoughtPod", "Destroyed.");
 	}
 }

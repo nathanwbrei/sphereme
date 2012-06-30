@@ -1,4 +1,4 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.activity;
 
 import java.io.ByteArrayOutputStream;
 
@@ -9,27 +9,26 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.samsung.spensdk.SCanvasView;
-import com.theamrzone.android.sphereme.test.TestDisplaySPenActivity;
+import com.theamrzone.android.sphereme.R;
 
-public class PenActivity extends Activity  {
-    public final static String NEW_IMAGE = "com.theamrzone.android.sphereme.IMAGE";
+public class ImageEditor extends Activity  {
     
-	private SCanvasView msCanvas;
+	private SCanvasView canvas;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pencanvas);
 		
-		msCanvas = (SCanvasView) findViewById(R.id.canvas_view);
+		canvas = (SCanvasView) findViewById(R.id.canvas_view);
 	}
 	
 	public void exitAndCreateNewPenNote(View view) {
-		Intent intent = new Intent(this, TestDisplaySPenActivity.class);
-		Bitmap bitmap  = msCanvas.getCanvasBitmap(false);
+		Intent intent = new Intent(this, Main.class);
+		Bitmap bitmap  = canvas.getCanvasBitmap(false);
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteStream);
-		intent.putExtra(NEW_IMAGE, byteStream.toByteArray());
+		intent.putExtra(Main.NOTE_IMAGE, byteStream.toByteArray());
 		startActivity(intent);
-	}	
+	}
 }

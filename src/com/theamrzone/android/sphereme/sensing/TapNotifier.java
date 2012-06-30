@@ -1,4 +1,4 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.sensing;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -92,6 +92,8 @@ public class TapNotifier implements SensorEventListener, View.OnTouchListener {
 			fireTapHoldRelease();
 		} else if (holdTime < 150) {
 			fireTap();
+		} else {
+			fireTapHoldRelease();
 		}
 	}
 	

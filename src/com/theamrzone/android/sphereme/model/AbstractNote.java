@@ -1,8 +1,10 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.model;
 
 import java.io.ByteArrayInputStream;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+
+import com.theamrzone.android.sphereme.NormalVector;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

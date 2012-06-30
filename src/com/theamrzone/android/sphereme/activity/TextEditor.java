@@ -1,4 +1,4 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-public class EditorActivity extends Activity  {
-    public final static String NEW_NOTE = "com.theamrzone.android.sphereme.MESSAGE";
+import com.theamrzone.android.sphereme.R;
+
+public class TextEditor extends Activity  {
     
 	private EditText editBox;
 	
@@ -20,9 +21,9 @@ public class EditorActivity extends Activity  {
 	}
 	
 	public void exitAndCreateNewNote(View view) {
-		Intent intent = new Intent(this, SpheremeActivity.class);
+		Intent intent = new Intent(this, Main.class);
 	    String content = editBox.getText().toString();
-	    intent.putExtra(NEW_NOTE, content);
+	    intent.putExtra(Main.NOTE_TEXT, content);
 	    startActivity(intent);
 	}
 }

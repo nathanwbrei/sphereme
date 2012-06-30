@@ -6,6 +6,9 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 
+import com.theamrzone.android.sphereme.sensing.TapListener;
+import com.theamrzone.android.sphereme.sensing.TapNotifier;
+
 /**
  * Extend this if you want some tap action! Fires (one) listener on "tap" and on "tap and hold" 
  * @author Katherine

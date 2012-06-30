@@ -1,5 +1,8 @@
 package com.theamrzone.android.sphereme;
 
+import com.theamrzone.android.sphereme.model.AbstractNote;
+import com.theamrzone.android.sphereme.view.TextNoteView;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -15,7 +18,7 @@ public class NoteViewOnClickListener implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-		NoteView nv = (NoteView) v;
+		TextNoteView nv = (TextNoteView) v;
 		
 		int id = nv.getNote().getId();
 		String content = AbstractNote.binaryToString(nv.getNote().getContent());

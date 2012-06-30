@@ -1,4 +1,6 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.sensing;
+
+import com.theamrzone.android.sphereme.sensing.SensingActivity;
 
 import android.hardware.Sensor;
 import android.hardware.SensorManager;

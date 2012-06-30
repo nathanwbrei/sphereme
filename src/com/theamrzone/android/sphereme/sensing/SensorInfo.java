@@ -1,10 +1,12 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.sensing;
 
 import android.content.ContextWrapper;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+
+import com.theamrzone.android.sphereme.activity.Main;
 
 //SensorInfo is an object which stores all of the raw sensor information
 //as well as other relevant calculated information in publicly accessible variables.
@@ -34,7 +36,9 @@ public class SensorInfo extends ContextWrapper implements SensorEventListener {
 								// 6 degrees to the right of center and 6 degrees to the left lies "1", the front.
 							  //From 6 degrees to the right to 18 degrees to the right is "2", 18 to 30 degrees "3". From left 18 degrees
 								// to left 6 degrees is bucket "30".
-	private int numVC = 4; // Change this to increase or decrease number of VCs (columns, buckets).  More means can fit more icons in
+	public int VisualColumnNice; // This takes into account pitch in order to give a nicer Visual Column.  Use it instead of VisualColumn.
+								// Lower hemisphere it is the same as VisualColumn, upper hemisphere it approximates reality
+	private int numVC = Main.NUM_VISUAL_COLUMNS; // Change this to increase or decrease number of VCs (columns, buckets).  More means can fit more icons in
 										// physical space but more jumpiness / calibration / noise filtering required.
 	
 	private SensorListener listener;
@@ -47,7 +51,7 @@ public class SensorInfo extends ContextWrapper implements SensorEventListener {
 	    mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 	    mField = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 	}
-	
+
 	public SensorManager mSensorManager;
     public Sensor mAccelerometer;
     public Sensor mGyroscope;
@@ -79,6 +83,12 @@ public class SensorInfo extends ContextWrapper implements SensorEventListener {
         }
         //Determine the VisualColumn in the visual plane to which it belongs
         VisualColumn = (getVCFromDegrees(values[0]) );
+        //Set VisualColumnNice accordingly
+        if (Math.abs(acc_roll) > 2.0) {
+        	VisualColumnNice = (VisualColumn + Math.round(numVC/2)) % numVC + 1;
+        } else {
+        	VisualColumnNice = VisualColumn;
+        }
 //    	debugger.setText("Updated VC: " + VisualColumn + " " + System.currentTimeMillis());
         //Display the raw values
 //        debugger.setText(String.format("Azimuth: %1$1.2f, Pitch: %2$1.2f, Roll: %3$1.2f",
