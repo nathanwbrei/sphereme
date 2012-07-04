@@ -14,7 +14,7 @@ public class SQLStatements {
                 "nz double, " +
                 "type text, " +
                 "thumbnail blob, " +
-                "content blob,"+
+                "content text,"+
                 "_id int primary key" +
                 ");";
 

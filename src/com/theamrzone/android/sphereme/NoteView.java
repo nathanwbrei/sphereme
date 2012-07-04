@@ -9,17 +9,17 @@ public class NoteView extends TextView {
 
 	private AbstractNote note;
 	
-	public NoteView(Context context, AbstractNote note) {
+	public NoteView(Context context, AbstractNote note) throws Exception {
 		super(context);
 		this.note = note;
 		
-		if (note.getType() == Note.STRING) {
-			setText(AbstractNote.binaryToString(note.getContent()));
+		if (note.isStringContent()) {
+			setText(note.getStringContent());
 			setBackgroundResource(R.drawable.note);
 			setTextColor(context.getResources().getColor(R.color.virtual_blue));
 			setTypeface(Typeface.MONOSPACE);
 		} else {
-			BitmapDrawable bd = new BitmapDrawable(AbstractNote.binaryToBitmap(note.getContent()));
+			BitmapDrawable bd = new BitmapDrawable(note.getBitmapContent());
 			setBackgroundDrawable(bd);
 		}
 	}

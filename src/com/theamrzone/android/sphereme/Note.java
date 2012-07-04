@@ -1,12 +1,18 @@
 package com.theamrzone.android.sphereme;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class Note extends AbstractNote {
 
 	public static final String STRING = "STRING";
 	public static final String IMAGE = "IMAGE";
-
+	
 	private final int id;
 	private double r;
 	private double t;
@@ -14,11 +20,11 @@ public class Note extends AbstractNote {
 	private NormalVector n;
 	private String type;
 	private Bitmap thumbnail;
-	private byte [] content;
+	private String content; // content as a string, or the file location
 
 	//RELIES ON THE FACT THAT THE DATABASE HAS ALREADY BEEN INITIATED
 	public Note(double r, double t, double z, double nx, double ny,
-			double nz, String type, Bitmap thumbnail, byte[] content) {
+			double nz, String type, Bitmap thumbnail, byte[] content, Context c) throws IOException {
 
 		this.id=NoteDatabaseHelper.incrementCounter();
 
@@ -32,13 +38,43 @@ public class Note extends AbstractNote {
 		n= new NormalVector(nx,ny,nz);
 		this.type=type;
 		this.thumbnail=thumbnail;
-		this.content=content;
 
+		if (type.equals(STRING))
+		{
+			this.content=Note.binaryToString(content);
+		}
+		else
+		{
+			_setInternalContent(content,c);
+		}
+
+	}
+
+	private void _setInternalContent(byte[] content, Context c) throws IOException {
+		String file_location="note"+id;
+		FileOutputStream fos=null;
+		
+		try
+		{
+			fos = c.openFileOutput(file_location, Context.MODE_PRIVATE);
+			fos.write(content);
+		}
+		catch (FileNotFoundException e)
+		{
+			Log.e("Should not ever be getting this.", e.toString());
+		}
+		finally
+		{
+			fos.close();
+		}
+		
+		this.content=file_location;
+		
 	}
 
 	// SHOULD ONLY BE CALLED BY NOTEDATEBASEHELPER
 	public Note(double r, double t, double z, double nx, double ny,
-			double nz, String type, byte[] thumbnail, byte[] content, int id) {
+			double nz, String type, byte[] thumbnail, String content, int id) {
 
 		this.id=id;
 		this.r=r;
@@ -94,12 +130,21 @@ public class Note extends AbstractNote {
 	@Override
 	public void setContent(String s) {
 		this.type=STRING;
-		this.content=Note.stringToByte(s);
+		this.content=s;
 		setThumbnail(Note.generateThumbnail(s));
+	}
+	
+	@Override
+	public void setContent(Bitmap b, Context c) throws IOException
+	{
+		this.type=IMAGE;
+		_setInternalContent(Note.bitmapToBinary(b),c);
+		this.thumbnail=Note.generateThumbnail(b);
 	}
 
 	@Override
-	public byte[] getContent() {
+	public String getStringContent(){
+		
 		return content;
 	}
 
@@ -121,16 +166,34 @@ public class Note extends AbstractNote {
 				", id: " + id;
 	}
 
-	@Override
-	public void setContent(Bitmap bmp) {
-		type=IMAGE;
-		content=AbstractNote.bitmapToBinary(bmp);
-		this.thumbnail=Note.generateThumbnail(bmp);
-	}
 
 	@Override
 	public void setThumbnail(Bitmap bmp) {
 		this.thumbnail=bmp;
 
+	}
+
+	@Override
+	public Bitmap getBitmapContent() throws Exception {
+		if (type.equals(IMAGE))
+		{
+			return null;
+		}
+		else
+		{
+			throw new Exception("Can only call this method if type is Image");
+		}
+	}
+	
+	@Override
+	public boolean isStringContent()
+	{
+		return this.type.equals(STRING);
+	}
+	
+	@Override
+	public boolean isBitmapContent()
+	{
+		return this.type.equals(IMAGE);
 	}
 }

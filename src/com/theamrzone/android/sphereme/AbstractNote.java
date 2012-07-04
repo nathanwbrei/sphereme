@@ -1,9 +1,11 @@
 package com.theamrzone.android.sphereme;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -27,13 +29,16 @@ public abstract class AbstractNote {
 
 	public abstract String getType();
 	public abstract void setContent(String s);
-	public abstract void setContent(Bitmap b);
+	public abstract void setContent(Bitmap b, Context c) throws IOException;
 
 	//Don't call directly unless you need to
 	//Automatically gets called if you call setContent()
 	public abstract void setThumbnail(Bitmap b);
 
-	public abstract byte[] getContent();
+	//returns the String content, or the file where the content can be found
+	public abstract Bitmap getBitmapContent() throws Exception;
+	public abstract String getStringContent();
+	
 	public abstract Bitmap getThumbnail();
 
 	//must give it a database instance
@@ -117,4 +122,6 @@ public abstract class AbstractNote {
 		return generateThumbnail(stringToBitmap(s));
 	}
 
+	public abstract boolean isStringContent();
+	public abstract boolean isBitmapContent();
 }

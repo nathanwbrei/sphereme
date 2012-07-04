@@ -11,7 +11,7 @@ import android.view.View;
 
 public class NoteDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
 	private static NoteDatabaseHelper INSTANCE = null;
     
@@ -98,7 +98,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		
 
 		add.bindBlob(8, AbstractNote.bitmapToBinary(n.getThumbnail()));
-		add.bindBlob(9, n.getContent());
+		add.bindString(9, n.getStringContent()); //binds the filename or the actual string depending on type
 		Log.d("DEBUG", "d");
 		add.bindLong(10, n.getId());
 		
@@ -133,7 +133,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		update.bindString(7, n.getType());
 
 		update.bindBlob(8, AbstractNote.bitmapToBinary(n.getThumbnail()));
-		update.bindBlob(9, n.getContent());
+		update.bindString(9, n.getStringContent());
 		
 		update.bindLong(10, n.getId());
 		update.executeInsert();
@@ -157,7 +157,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 			double nz=c.getDouble(5);
 			String type=c.getString(6);
 			byte[] thumbnail = c.getBlob(7);
-			byte[] content = c.getBlob(8);
+			String content = c.getString(8);
 			int id = c.getInt(9);
 			
 			notes.add(new Note(r,t,z,nx,ny,nz,type,thumbnail,content,id));		
