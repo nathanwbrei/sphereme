@@ -33,6 +33,7 @@ public final class R {
         public static final int max_z=0x7f08000f;
         public static final int options_new_image=0x7f080015;
         public static final int options_new_text=0x7f080014;
+        public static final int options_return_to_world=0x7f080016;
         public static final int save_button=0x7f080004;
         public static final int tap_layout=0x7f080008;
         public static final int time=0x7f08000a;
@@ -55,6 +56,7 @@ public final class R {
     }
     public static final class menu {
         public static final int add_new_thought=0x7f070000;
+        public static final int return_to_world=0x7f070001;
     }
     public static final class string {
         public static final int app_name=0x7f060001;
@@ -63,6 +65,7 @@ public final class R {
         public static final int hello=0x7f060000;
         public static final int menu_new_image_note=0x7f060006;
         public static final int menu_new_text_note=0x7f060005;
+        public static final int menu_return_to_world=0x7f060007;
         public static final int pen_save=0x7f060004;
     }
 }

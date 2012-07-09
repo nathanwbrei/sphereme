@@ -25,7 +25,7 @@ public class Main extends TapAndSensingActivity {
     public final static String NOTE_ID = "com.theamrzone.android.sphereme.ID";
     public final static String NOTE_TEXT = "com.theamrzone.android.sphereme.TEXT";
     public final static String NOTE_IMAGE = "com.theamrzone.android.sphereme.IMAGE";
-    public final static int NUM_VISUAL_COLUMNS = 4;
+    public final static int NUM_VISUAL_COLUMNS = 8;
 	
     private TextView textView;
 	private WorldModel model;
