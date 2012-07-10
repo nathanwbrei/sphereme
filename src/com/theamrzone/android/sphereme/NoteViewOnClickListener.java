@@ -21,7 +21,7 @@ public class NoteViewOnClickListener implements OnClickListener {
 		TextNoteView nv = (TextNoteView) v;
 		
 		int id = nv.getNote().getId();
-		String content = AbstractNote.binaryToString(nv.getNote().getContent());
+		String content = nv.getNote().getStringContent();
 		
 		Intent intent = new Intent(context, UpdateActivity.class);
 		intent.putExtra(UpdateActivity.NOTE_ID, id);

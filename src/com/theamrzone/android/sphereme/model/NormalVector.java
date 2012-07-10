@@ -1,4 +1,4 @@
-package com.theamrzone.android.sphereme;
+package com.theamrzone.android.sphereme.model;
 
 public class NormalVector {
 	

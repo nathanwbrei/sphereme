@@ -80,6 +80,14 @@ public class TapNotifier implements SensorEventListener, View.OnTouchListener {
 		holdTime = System.currentTimeMillis() - startHoldTime;
 		detectAction();
 	}
+
+	public long getCurrentHoldTime() {
+		if (isDown) {
+			return System.currentTimeMillis() - startHoldTime;
+		} else {
+			return -1;
+		}
+	}
 	
 	private void detectAction() {
 		if (isDown) { return; } // too premature to determine what's goine on

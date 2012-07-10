@@ -11,10 +11,12 @@ import com.theamrzone.android.sphereme.R;
 import com.theamrzone.android.sphereme.model.AbstractNote;
 import com.theamrzone.android.sphereme.model.Note;
 import com.theamrzone.android.sphereme.model.NoteDatabaseHelper;
+import com.theamrzone.android.sphereme.model.NoteType;
 import com.theamrzone.android.sphereme.model.WorldModel;
 import com.theamrzone.android.sphereme.model.WorldModel.State;
 import com.theamrzone.android.sphereme.sensing.SensorInfo;
 import com.theamrzone.android.sphereme.sensing.TapAndSensingActivity;
+import com.theamrzone.android.sphereme.view.INoteView;
 import com.theamrzone.android.sphereme.view.ImageNoteView;
 import com.theamrzone.android.sphereme.view.TextNoteView;
 import com.theamrzone.android.sphereme.view.WorldView;
@@ -22,11 +24,16 @@ import com.theamrzone.android.sphereme.view.WorldViewOneNote;
 
 public class Main extends TapAndSensingActivity {
 
+	public final static String NOTE_VISUAL_COLUMN = "com.theamrzone.android.sphereme.VC";
     public final static String NOTE_ID = "com.theamrzone.android.sphereme.ID";
     public final static String NOTE_TEXT = "com.theamrzone.android.sphereme.TEXT";
     public final static String NOTE_IMAGE = "com.theamrzone.android.sphereme.IMAGE";
+    public final static String NOTE_IMAGE_FILE = "com.theamrzone.android.sphereme.IMAGE_FILE";
+    
     public final static int NUM_VISUAL_COLUMNS = 8;
-	
+    public final static int BAD_BIAS = -100;
+    public static int visualColumnBias = BAD_BIAS;
+    
     private TextView textView;
 	private WorldModel model;
 	private WorldView worldView;
@@ -36,12 +43,11 @@ public class Main extends TapAndSensingActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// Create the text view
-	    textView = new TextView(this);
-	    textView.setText("THIS IS SOME TEXT");
-	    
+		// Trace logging
+		Log.d("Main", "onCreate was called.");
+		
 	    // World Model
-	    model = new WorldModel();
+		model = new WorldModel();
 	    worldView = new WorldViewOneNote(this, model);
 	    
 	    // Create view and tapping
@@ -49,16 +55,22 @@ public class Main extends TapAndSensingActivity {
 	    super.onCreate(savedInstanceState, worldView);
 		
 	    // Database
-	    dbHelper = NoteDatabaseHelper.getInstance(this);
+	    dbHelper = new NoteDatabaseHelper(this);
 	    noteToSave = null;
 	    getNoteToSave();
 	    
 	    initializeNotes();
 	}
 	
+	@Override
+	public void onResume() {
+		Log.d("Main", "onResume");
+		super.onResume();
+	}
+	
 	private void displayNote(AbstractNote note) {
 		// if it's a text-based note
-		if (Note.STRING.equals(note.getType())) {
+		if (note.getType() == NoteType.STRING) {
 			TextNoteView noteView = new TextNoteView(this, note);
 			worldView.addNoteView(noteView);
 						
@@ -84,18 +96,21 @@ public class Main extends TapAndSensingActivity {
     	int noteId = intent.getIntExtra(Main.NOTE_ID, -1);
     	String textContent = intent.getStringExtra(Main.NOTE_TEXT);
     	byte[] imageContent = intent.getByteArrayExtra(Main.NOTE_IMAGE);
+    	int visualColumn = intent.getIntExtra(NOTE_VISUAL_COLUMN, 0);
     	
     	// TODO: if noteID == -1, then it's a note to update, not create
     	if (noteId == -1 && textContent != null && textContent.length() > 0) {
-    		noteToSave = new Note(0, 0, 0, 0, 0, 0, 
-    				Note.STRING, 
+    		noteToSave = new Note(0, visualColumn, 0, 0, 0, 0, 
+    				NoteType.STRING, 
     				Note.stringToBitmap(textContent), // generate bitmap from string
-    				Note.stringToByte(textContent));  // generate byte content from string
+    				Note.stringToByte(textContent),  // generate byte content from string
+    				this);
     	} else if (noteId == -1 && imageContent != null && imageContent.length > 0) {
-    		noteToSave = new Note(0, 0, 0, 0, 0, 0,
-    				Note.IMAGE,
+    		noteToSave = new Note(0, visualColumn, 0, 0, 0, 0,
+    				NoteType.IMAGE,
     				Note.binaryToBitmap(imageContent),
-    				imageContent);
+    				imageContent,
+    				this);
     	}
 	}
 	
@@ -104,12 +119,14 @@ public class Main extends TapAndSensingActivity {
 	 */
 	private void saveNote() {
 		if (noteToSave != null) {
-			if (Note.STRING.equals(noteToSave.getType())) {
+			if (noteToSave.getType() == NoteType.STRING) {
 				textView.setText("Note content to save: " + 
-								  Note.binaryToString(noteToSave.getContent()));				
+								  noteToSave.getStringContent());				
 			}
 			
-			noteToSave.setRTZ(0, model.getActualVisualColumn(), 0);
+			if (noteToSave.getR() == 0) {
+				noteToSave.setRTZ(0, model.getActualVisualColumn(), 0);
+			}
 			noteToSave.save(dbHelper);
 			displayNote(noteToSave);
 			noteToSave = null;
@@ -131,9 +148,11 @@ public class Main extends TapAndSensingActivity {
 		switch (item.getItemId()) {
 		case R.id.options_new_text:
 			intent = new Intent(this, TextEditor.class);
+			intent.putExtra(NOTE_VISUAL_COLUMN, model.getDisplayVisualColumn());
 			break;
 		case R.id.options_new_image:
 			intent = new Intent(this, ImageEditor.class);
+			intent.putExtra(NOTE_VISUAL_COLUMN, model.getDisplayVisualColumn());
 			break;
 		}
 		
@@ -147,11 +166,19 @@ public class Main extends TapAndSensingActivity {
 	// -- DESTRUCTION
 	@Override
 	public void onPause() {
-		Log.d("Main", "paused!");
+		Log.d("Main", "paused.");
 		super.onPause();
 	}
+	
+	@Override
+	public void onStop() {
+		Log.d("Main", "Stopped.");
+		super.onStop();
+	}
+	
 	@Override
 	public void onDestroy() {
+		Log.d("Main", "destroyed!");
 		dbHelper.close();
 		super.onDestroy();
 	}
@@ -162,7 +189,7 @@ public class Main extends TapAndSensingActivity {
 		boolean isDown = tapNotifier.isDown();
 		
 		// Here is the actual tap sensing state change
-		if (isDown && model.getState() == State.STATIONARY) {
+		if (tapNotifier.getCurrentHoldTime() > 100 && model.getState() == State.STATIONARY) {
 			model.setState(State.MOVING);
 		} else if (!isDown && model.getState() == State.MOVING) {
 			model.setState(State.STATIONARY);
@@ -174,5 +201,20 @@ public class Main extends TapAndSensingActivity {
 		// we now know for certain that the model's vc is up to date, 
 		// so we can go ahead and add a note
 		saveNote();
+	}
+	
+	@Override
+	public void onTap(float x, float y) {
+		Intent intent = new Intent(this, ImageEditor.class);
+		intent.putExtra(NOTE_VISUAL_COLUMN, model.getDisplayVisualColumn());
+		
+		INoteView noteView = worldView.getCurrentNoteView();
+		Log.d("Main", "Current Note: " + (noteView != null));
+		if (noteView != null && noteView.getNote().getType() == NoteType.IMAGE) {
+			Log.d("Main", "Current Note Type: " + noteView.getNote().getType());
+			intent.putExtra(NOTE_IMAGE_FILE, noteView.getNote().getStringContent());
+		}
+		
+		startActivity(intent);
 	}
 }

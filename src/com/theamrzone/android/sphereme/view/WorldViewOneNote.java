@@ -16,12 +16,15 @@ public class WorldViewOneNote extends WorldView {
 	
 	private HashMap<Integer, TextNoteView> textNotes;
 	private HashMap<Integer, ImageNoteView> imageNotes;
+	private INoteView currentNote;
 	
 	public WorldViewOneNote(Context context, WorldModel worldModel){
 		super(context, worldModel);
 		
 		textNotes = new HashMap<Integer, TextNoteView>();
 		imageNotes = new HashMap<Integer, ImageNoteView>();
+		
+		currentNote = null;
 	}
 	
 	private RelativeLayout.LayoutParams generateNoteViewParams(int screenIndex) {
@@ -51,6 +54,7 @@ public class WorldViewOneNote extends WorldView {
 	@Override
 	protected void drawNotes() {
 		// disappear all notes
+		currentNote = null;
 		for (TextNoteView nv : textNotes.values()) {
 			nv.setVisibility(View.GONE);
 		}
@@ -73,10 +77,17 @@ public class WorldViewOneNote extends WorldView {
 		// only the text exists, so show that one
 		} else if (textView != null) {
 			textView.setVisibility(View.VISIBLE);
+			currentNote = textView;
 		
 		// only the image view exists, so show that one
 		} else if (imageView != null) {
 			imageView.setVisibility(View.VISIBLE);
+			currentNote = imageView;
 		}
+	}
+	
+	@Override
+	public INoteView getCurrentNoteView() {
+		return currentNote;
 	}
 }

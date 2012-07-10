@@ -11,8 +11,10 @@ import com.theamrzone.android.sphereme.activity.Main;
 import com.theamrzone.android.sphereme.model.AbstractNote;
 import com.theamrzone.android.sphereme.model.Note;
 import com.theamrzone.android.sphereme.model.NoteDatabaseHelper;
+import com.theamrzone.android.sphereme.model.NoteType;
 import com.theamrzone.android.sphereme.sensing.SensorInfo;
 import com.theamrzone.android.sphereme.sensing.TapAndSensingActivity;
+import com.theamrzone.android.sphereme.view.INoteView;
 import com.theamrzone.android.sphereme.view.TextNoteView;
 import com.theamrzone.android.sphereme.view.WorldView200;
 
@@ -30,7 +32,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	// DB
-        dbHelper = NoteDatabaseHelper.getInstance(this);
+        dbHelper = new NoteDatabaseHelper(this);
         
     	// view
         // OworldView = new WorldView(this);
@@ -51,9 +53,16 @@ public class SpheremeActivity extends TapAndSensingActivity {
     	for (int i=0;i< notes.size();i++){
     		AbstractNote note = notes.get(i);
     		note.setRTZ(0, note.getT(), 3); 
-    		TextNoteView noteView = new TextNoteView(this, note);
-    		
-    		worldView.addNoteView(noteView);
+
+    		try
+    		{
+    			INoteView noteView = NoteView.createNoteView(this, note);
+//    			worldView.addNoteView(noteView);
+    		}
+    		catch (Exception e)
+    		{
+    			Log.e("Error with note "+note.getId(), e.toString());
+    		}
     	}
     }
 
@@ -68,24 +77,24 @@ public class SpheremeActivity extends TapAndSensingActivity {
     	newImageContent = intent.getByteArrayExtra(PenActivity.NEW_IMAGE);
     }
 	
-	private void saveNewNote(String newContent, double theta) {
+	private void saveNewNote(String newContent, double theta) throws Exception {
 		Log.d("SpheremeActivty", "Creatng new content: " + newContent);
 		Note note = new Note(0, theta, 0, 0, 0, 0, 
-				Note.STRING, 
+				NoteType.STRING, 
 				Note.stringToBitmap(newContent), // generate bitmap from string
-				Note.stringToByte(newContent));  // generate byte content from string 
+				Note.stringToByte(newContent), this.getBaseContext());  // generate byte content from string 
 		note.save(dbHelper); 
 		
 		TextNoteView noteView = new TextNoteView(this, note);
 		worldView.addNoteView(noteView);
 	}
 	
-	private void saveNewNote(byte[] newContent, double theta) {
+	private void saveNewNote(byte[] newContent, double theta) throws Exception {
 		Log.d("SpheremeActivity", "creating new bitmap content");
 		Note note = new Note(0, theta, 0, 0, 0, 0,
-				Note.IMAGE,
+				NoteType.IMAGE,
 				Note.binaryToBitmap(newContent),
-				newContent);
+				newContent, this.getBaseContext());
 		note.save(dbHelper);
 		
 		TextNoteView noteView = new TextNoteView(this, note);
@@ -103,13 +112,23 @@ public class SpheremeActivity extends TapAndSensingActivity {
 		
 		if (newNoteContent != null) {
 			if (newNoteContent.length() > 0) {
-				saveNewNote(newNoteContent, vc);
+				try {
+					saveNewNote(newNoteContent, vc);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			newNoteContent = null;
 		}
 		
 		if (newImageContent != null) {
-			saveNewNote(newImageContent, vc);
+			try {
+				saveNewNote(newImageContent, vc);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			newImageContent = null;
 		}
 		

@@ -9,7 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 
 
-public class WorldView extends View{
+public class WorldView extends View {
 	
 	// Test data. Replace this with real data.
 	// Each theta bucket is given one note, so this should be really darn easy

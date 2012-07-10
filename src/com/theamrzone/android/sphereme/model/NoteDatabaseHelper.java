@@ -1,21 +1,18 @@
 package com.theamrzone.android.sphereme.model;
 import java.util.ArrayList;
 
-import com.theamrzone.android.sphereme.NormalVector;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-import android.view.View;
 
 public class NoteDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
-	private static NoteDatabaseHelper INSTANCE = null;
+//	private static NoteDatabaseHelper INSTANCE = null;
     
     private static int s_note_counter=-1;
     
@@ -25,7 +22,7 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
     private SQLiteStatement delete;
     private SQLiteStatement flush;
     
-    private NoteDatabaseHelper(Context context) {
+    public NoteDatabaseHelper(Context context) {
         super(context, SQLStatements.DATABASE_NAME, null, DATABASE_VERSION);
         Cursor c= this.getReadableDatabase().rawQuery(SQLStatements.GET_COUNTER, new String[] {});
         c.moveToNext();
@@ -38,16 +35,17 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
         flush= this.getWritableDatabase().compileStatement(SQLStatements.FLUSH_DATABASE);
     }
 
-    public static NoteDatabaseHelper getInstance(Context context)
-    {
-    	if (INSTANCE==null)
-    	{
-    		Log.d("DB","Created a new instance of the database");
-    		INSTANCE= new NoteDatabaseHelper(context);
-    	}
-    	
-    	return INSTANCE;
-    }
+//    public static NoteDatabaseHelper getInstance(Context context)
+//    {
+//    	if (INSTANCE==null)
+//    	{
+//    		Log.d("DB","Created a new instance of the database");
+//    		INSTANCE= new NoteDatabaseHelper(context);
+//    	}
+//    	
+//    	return INSTANCE;
+//    }
+    
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQLStatements.NOTE_TABLE_CREATE);
@@ -95,12 +93,12 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		add.bindDouble(5, normal.getY());
 		add.bindDouble(6, normal.getZ());
 		Log.d("DEBUG", "b");
-		add.bindString(7, n.getType());
+		add.bindString(7, n.getTypeAsString());
 		Log.d("DEBUG", "c");
 		
 
 		add.bindBlob(8, AbstractNote.bitmapToBinary(n.getThumbnail()));
-		add.bindBlob(9, n.getContent());
+		add.bindString(9, n.getStringContent()); //binds the filename or the actual string depending on type
 		Log.d("DEBUG", "d");
 		add.bindLong(10, n.getId());
 		
@@ -132,10 +130,10 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 		update.bindDouble(5, normal.getY());
 		update.bindDouble(6, normal.getZ());
 		
-		update.bindString(7, n.getType());
+		update.bindString(7, n.getTypeAsString());
 
 		update.bindBlob(8, AbstractNote.bitmapToBinary(n.getThumbnail()));
-		update.bindBlob(9, n.getContent());
+		update.bindString(9, n.getStringContent());
 		
 		update.bindLong(10, n.getId());
 		update.executeInsert();
@@ -159,10 +157,13 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
 			double nz=c.getDouble(5);
 			String type=c.getString(6);
 			byte[] thumbnail = c.getBlob(7);
-			byte[] content = c.getBlob(8);
+			String content = c.getString(8);
 			int id = c.getInt(9);
 			
-			notes.add(new Note(r,t,z,nx,ny,nz,type,thumbnail,content,id));		
+			notes.add(new Note(r,t,z,
+							   nx,ny,nz,
+							   NoteType.stringToType(type),
+							   thumbnail,content,id));		
 		}
 		
 		Log.d("DB","Retrieved "+notes.size() + " notes.");

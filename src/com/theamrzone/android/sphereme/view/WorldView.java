@@ -15,8 +15,8 @@ import com.theamrzone.android.sphereme.model.WorldModelListener;
 public abstract class WorldView extends RelativeLayout implements WorldModelListener {
 
 	// Bounding box for screen. See onSizeChanged()
-	public int maxX = 0;
-	public int maxY = 0;
+	public static int maxX = 0;
+	public static int maxY = 0;
 	public float maxZ = 10;  // bucket our Z as well
 	
 	protected GradientDrawable gradient;
@@ -44,6 +44,20 @@ public abstract class WorldView extends RelativeLayout implements WorldModelList
 	}
 	
 	protected abstract void drawNotes();
+	public abstract INoteView getCurrentNoteView();
+	
+	public static GradientDrawable getGradient(int displayVisualColumn) {
+		// Responsive gradient background. Is the gradient object even mutable?
+		// HSV wants: h=[0,360); s=[0,1]; v=[0,1]		
+		
+		float hue = displayVisualColumn * 360.0f/Main.NUM_VISUAL_COLUMNS ;
+		float[] hsv = {hue, 0.7f, 0.5f};
+				
+		int[] gradcolors = {Color.HSVToColor(hsv), Color.BLACK};
+		GradientDrawable gradient = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradcolors);
+		gradient.setBounds(0, 0, maxX, maxY);
+		return gradient;
+	}
 	
 	protected void setBackgroundGradient() {
 		// set to nothing while it's still thinking
@@ -52,14 +66,7 @@ public abstract class WorldView extends RelativeLayout implements WorldModelList
 			return;
 		}
 		
-		// Responsive gradient background. Is the gradient object even mutable?
-		// HSV wants: h=[0,360); s=[0,1]; v=[0,1]
-		float hue = model.getDisplayVisualColumn() * 360.0f/Main.NUM_VISUAL_COLUMNS ;
-		float[] hsv = {hue, 0.7f, 0.5f};
-				
-		int[] gradcolors = {Color.HSVToColor(hsv), Color.BLACK};
-		gradient = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradcolors);
-		gradient.setBounds(0,0,maxX, maxY);
+		gradient = getGradient(model.getDisplayVisualColumn());
 		this.setBackgroundDrawable(gradient);
 	}
 	

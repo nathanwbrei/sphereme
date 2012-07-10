@@ -3,6 +3,10 @@ package com.theamrzone.android.sphereme.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
+import com.theamrzone.android.sphereme.activity.Main;
+
 public class WorldModel {
 
 	public enum State {
@@ -28,10 +32,18 @@ public class WorldModel {
 	}
 	
 	public void setVisualColumn(int newVC) {
+		// set bias if unset
+		if (Main.visualColumnBias == Main.BAD_BIAS) {
+			Main.visualColumnBias = Main.NUM_VISUAL_COLUMNS - newVC - 1;
+			displayVisualColumn = 0;
+		}
+		
+		newVC = (newVC + Main.visualColumnBias ) % Main.NUM_VISUAL_COLUMNS + 1;
 		actualVisualColumn = newVC;
 		
 		if (state == State.MOVING || displayVisualColumn == 0) {
 			displayVisualColumn = newVC;
+			Log.d("WorldModel", "DisplayVC:" + newVC);
 		}
 		
 		fireListeners();

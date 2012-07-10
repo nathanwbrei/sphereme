@@ -97,4 +97,7 @@ public class WorldView200 extends WorldView {
 			}
 		}
 	}
+	
+	@Override
+	public INoteView getCurrentNoteView() { return null; }
 }
