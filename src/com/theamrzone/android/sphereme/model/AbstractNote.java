@@ -1,11 +1,9 @@
 package com.theamrzone.android.sphereme.model;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -30,7 +28,7 @@ public abstract class AbstractNote {
 	public abstract NoteType getType();
 	public abstract String getTypeAsString();
 	public abstract void setContent(String s);
-	public abstract void setContent(Bitmap b, Context c) throws IOException;
+	public abstract void setContent(Bitmap b);
 
 	//Don't call directly unless you need to
 	//Automatically gets called if you call setContent()
@@ -45,10 +43,15 @@ public abstract class AbstractNote {
 	//must give it a database instance
 	public void save(NoteDatabaseHelper h)
 	{
-		Log.d("NOTE", "Save called");
+		if (getType() == NoteType.FAKE) {
+			Log.d("Note", "Tried to save on fake note and failed.");
+			return;
+		}
+		
+		Log.d("Note", "Save called");
 		if(h.existsNote(this))
 		{
-			Log.d("NOTE","Note already exists..");
+			Log.d("Note","Note already exists..");
 			h.updateNote(this);
 		}
 		else

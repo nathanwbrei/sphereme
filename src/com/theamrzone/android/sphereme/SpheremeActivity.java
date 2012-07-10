@@ -82,7 +82,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
 		Note note = new Note(0, theta, 0, 0, 0, 0, 
 				NoteType.STRING, 
 				Note.stringToBitmap(newContent), // generate bitmap from string
-				Note.stringToByte(newContent), this.getBaseContext());  // generate byte content from string 
+				Note.stringToByte(newContent));  // generate byte content from string 
 		note.save(dbHelper); 
 		
 		TextNoteView noteView = new TextNoteView(this, note);
@@ -94,7 +94,7 @@ public class SpheremeActivity extends TapAndSensingActivity {
 		Note note = new Note(0, theta, 0, 0, 0, 0,
 				NoteType.IMAGE,
 				Note.binaryToBitmap(newContent),
-				newContent, this.getBaseContext());
+				newContent);
 		note.save(dbHelper);
 		
 		TextNoteView noteView = new TextNoteView(this, note);

@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -26,7 +25,7 @@ public class Note extends AbstractNote {
 
 	//RELIES ON THE FACT THAT THE DATABASE HAS ALREADY BEEN INITIATED
 	public Note(double r, double t, double z, double nx, double ny,
-			double nz, NoteType type, Bitmap thumbnail, byte[] content, Context c) {
+			double nz, NoteType type, Bitmap thumbnail, byte[] content) {
 
 		this.id=NoteDatabaseHelper.incrementCounter();
 
@@ -45,11 +44,11 @@ public class Note extends AbstractNote {
 		if (type == NoteType.STRING) {
 			this.content=Note.binaryToString(content);
 		} else {
-			setInternalContent(content,c);
+			setInternalContent(content);
 		}
 	}
-	private void setInternalContent(byte[] content, Context c) {
-		String file_location="note"+id;
+	private void setInternalContent(byte[] content) {
+		String file_location="note"+id + ".png";
 		
 		File file = new File(Environment.getExternalStorageDirectory(), file_location);
 		FileOutputStream fos = null;
@@ -140,10 +139,10 @@ public class Note extends AbstractNote {
 	}
 	
 	@Override
-	public void setContent(Bitmap b, Context c) throws IOException
+	public void setContent(Bitmap b)
 	{
 		this.type=NoteType.IMAGE;
-		setInternalContent(Note.bitmapToBinary(b),c);
+		setInternalContent(Note.bitmapToBinary(b));
 		this.thumbnail=Note.generateThumbnail(b);
 	}
 

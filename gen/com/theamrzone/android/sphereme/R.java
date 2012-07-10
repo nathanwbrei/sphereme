@@ -14,9 +14,11 @@ public final class R {
         public static final int virtual_blue=0x7f040000;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int note=0x7f020001;
-        public static final int roundbutton=0x7f020002;
+        public static final int about=0x7f020000;
+        public static final int how_to=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int note=0x7f020003;
+        public static final int roundbutton=0x7f020004;
     }
     public static final class id {
         public static final int action=0x7f080017;
@@ -33,9 +35,11 @@ public final class R {
         public static final int max_x=0x7f080013;
         public static final int max_y=0x7f080014;
         public static final int max_z=0x7f080015;
-        public static final int options_new_image=0x7f08001b;
-        public static final int options_new_text=0x7f08001a;
-        public static final int options_return_to_world=0x7f08001c;
+        public static final int options_about=0x7f08001e;
+        public static final int options_how_to=0x7f08001a;
+        public static final int options_new_image=0x7f08001d;
+        public static final int options_new_text=0x7f08001c;
+        public static final int options_return_to_world=0x7f08001b;
         public static final int pen_button=0x7f080008;
         public static final int pencanvas_layout=0x7f080007;
         public static final int redo_button=0x7f08000b;
@@ -61,8 +65,11 @@ public final class R {
         public static final int updater=0x7f030005;
     }
     public static final class menu {
-        public static final int add_new_thought=0x7f070000;
-        public static final int return_to_world=0x7f070001;
+        public static final int about_menu=0x7f070000;
+        public static final int add_new_thought=0x7f070001;
+        public static final int how_to_menu=0x7f070002;
+        public static final int main_menu=0x7f070003;
+        public static final int return_to_world=0x7f070004;
     }
     public static final class string {
         public static final int app_name=0x7f060001;
@@ -73,6 +80,8 @@ public final class R {
         public static final int eraser=0x7f060005;
         public static final int eraser_settings=0x7f060009;
         public static final int hello=0x7f060000;
+        public static final int menu_about=0x7f060011;
+        public static final int menu_how_to=0x7f060010;
         public static final int menu_new_image_note=0x7f06000e;
         public static final int menu_new_text_note=0x7f06000d;
         public static final int menu_return_to_world=0x7f06000f;

@@ -1,6 +1,8 @@
 package com.theamrzone.android.sphereme.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.theamrzone.android.sphereme.R;
 import com.theamrzone.android.sphereme.model.AbstractNote;
+import com.theamrzone.android.sphereme.model.FakeNote;
 import com.theamrzone.android.sphereme.model.Note;
 import com.theamrzone.android.sphereme.model.NoteDatabaseHelper;
 import com.theamrzone.android.sphereme.model.NoteType;
@@ -16,6 +19,7 @@ import com.theamrzone.android.sphereme.model.WorldModel;
 import com.theamrzone.android.sphereme.model.WorldModel.State;
 import com.theamrzone.android.sphereme.sensing.SensorInfo;
 import com.theamrzone.android.sphereme.sensing.TapAndSensingActivity;
+import com.theamrzone.android.sphereme.view.FakeImageNoteView;
 import com.theamrzone.android.sphereme.view.INoteView;
 import com.theamrzone.android.sphereme.view.ImageNoteView;
 import com.theamrzone.android.sphereme.view.TextNoteView;
@@ -75,8 +79,13 @@ public class Main extends TapAndSensingActivity {
 			worldView.addNoteView(noteView);
 						
 		// if it's an image based note
-		} else {
+		} else if (note.getType() == NoteType.IMAGE) {
 			ImageNoteView noteView = new ImageNoteView(this, note);
+			worldView.addNoteView(noteView);
+			
+		// it's a fake note. Lol.
+		} else if (note.getType() == NoteType.FAKE) {
+			FakeImageNoteView noteView = new FakeImageNoteView(this, note);
 			worldView.addNoteView(noteView);
 		}
 	}
@@ -85,6 +94,21 @@ public class Main extends TapAndSensingActivity {
 		for (AbstractNote note : dbHelper.getNotes()) {
 			displayNote(note);
 		}
+		
+		// add a How-To note if there are no notes.
+		if (dbHelper.getNotes().isEmpty()) {
+			makeHowToNote();
+		}
+	}
+	
+	private void makeHowToNote() {
+		// make note from bitmap
+		Bitmap bitmap  = BitmapFactory.decodeResource(getResources(), R.drawable.how_to);
+		AbstractNote note = new FakeNote(0, Main.NUM_VISUAL_COLUMNS, 0, 0, 0, 0, bitmap, bitmap);
+		
+		// save and display
+		displayNote(note);
+		Log.d("Main", "Display how to note");
 	}
 	
 	/**
@@ -103,14 +127,12 @@ public class Main extends TapAndSensingActivity {
     		noteToSave = new Note(0, visualColumn, 0, 0, 0, 0, 
     				NoteType.STRING, 
     				Note.stringToBitmap(textContent), // generate bitmap from string
-    				Note.stringToByte(textContent),  // generate byte content from string
-    				this);
+    				Note.stringToByte(textContent));  // generate byte content from string
     	} else if (noteId == -1 && imageContent != null && imageContent.length > 0) {
     		noteToSave = new Note(0, visualColumn, 0, 0, 0, 0,
     				NoteType.IMAGE,
     				Note.binaryToBitmap(imageContent),
-    				imageContent,
-    				this);
+    				imageContent);
     	}
 	}
 	
@@ -139,7 +161,7 @@ public class Main extends TapAndSensingActivity {
 	// -- MENU STUFF
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.add_new_thought, menu);
+		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -155,6 +177,14 @@ public class Main extends TapAndSensingActivity {
 			break;
 		case R.id.options_new_image:
 			intent = new Intent(this, ImageEditor.class);
+			intent.putExtra(NOTE_VISUAL_COLUMN, model.getDisplayVisualColumn());
+			break;
+		case R.id.options_how_to:
+			intent = new Intent(this, HowTo.class);
+			intent.putExtra(NOTE_VISUAL_COLUMN, model.getDisplayVisualColumn());
+			break;
+		case R.id.options_about:
+			intent = new Intent(this, About.class);
 			intent.putExtra(NOTE_VISUAL_COLUMN, model.getDisplayVisualColumn());
 			break;
 		}
@@ -183,6 +213,7 @@ public class Main extends TapAndSensingActivity {
 	public void onDestroy() {
 		Log.d("Main", "destroyed!");
 		dbHelper.close();
+		dbHelper.flush();
 		super.onDestroy();
 	}
 	

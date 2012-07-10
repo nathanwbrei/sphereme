@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/options_how_to"
+		android:title="@string/menu_how_to" />
+	<item android:id="@+id/options_return_to_world"
+		android:title="@string/menu_return_to_world" />
+</menu>

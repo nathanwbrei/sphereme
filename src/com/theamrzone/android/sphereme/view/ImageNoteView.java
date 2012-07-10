@@ -2,9 +2,6 @@ package com.theamrzone.android.sphereme.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.LightingColorFilter;
 import android.widget.ImageView;
 
 import com.theamrzone.android.sphereme.model.AbstractNote;

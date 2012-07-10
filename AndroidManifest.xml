@@ -26,6 +26,10 @@
             android:name=".activity.ImageEditor" />
         <activity
             android:name=".activity.TextEditor" />
+        <activity
+            android:name=".activity.About" />
+        <activity
+            android:name=".activity.HowTo" />
     </application>
 
 </manifest>

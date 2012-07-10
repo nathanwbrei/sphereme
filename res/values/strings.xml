@@ -20,4 +20,6 @@
 	<string name="menu_new_text_note">New text-based thought</string>
 	<string name="menu_new_image_note">New drawing-based thought</string>
 	<string name="menu_return_to_world">Return to your pod</string>
+	<string name="menu_how_to">Instructions</string>
+	<string name="menu_about">About</string>
 </resources>
