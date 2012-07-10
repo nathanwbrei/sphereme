@@ -37,14 +37,26 @@ public class WorldViewOneNote extends WorldView {
 	
 	@Override
 	public void addNoteView(TextNoteView nv) {
+		TextNoteView old = textNotes.get((int) nv.getNote().getT());
+		
+		if (old != null) {
+			removeView(old);
+		}
+		
 		textNotes.put((int) nv.getNote().getT(), nv);
 		RelativeLayout.LayoutParams params = generateNoteViewParams(nv.getId());
 		addView(nv, params);
-		nv.setVisibility(View.GONE);
+		nv.setVisibility(View.GONE); 
 	}
 	
 	@Override
 	public void addNoteView(ImageNoteView nv) {
+		ImageNoteView old = imageNotes.get((int) nv.getNote().getT());
+		
+		if (old != null) {
+			removeView(old);
+		}
+		
 		imageNotes.put((int) nv.getNote().getT(), nv);
 		RelativeLayout.LayoutParams params = generateNoteViewParams(nv.getId());
 		addView(nv, params);

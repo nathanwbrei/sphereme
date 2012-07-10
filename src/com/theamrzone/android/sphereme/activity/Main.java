@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.theamrzone.android.sphereme.R;
@@ -34,7 +36,7 @@ public class Main extends TapAndSensingActivity {
     public final static String NOTE_IMAGE = "com.theamrzone.android.sphereme.IMAGE";
     public final static String NOTE_IMAGE_FILE = "com.theamrzone.android.sphereme.IMAGE_FILE";
     
-    public final static int NUM_VISUAL_COLUMNS = 8;
+    public final static int NUM_VISUAL_COLUMNS = 12;
     public final static int BAD_BIAS = -100;
     public static int visualColumnBias = BAD_BIAS;
     
@@ -42,6 +44,7 @@ public class Main extends TapAndSensingActivity {
 	private WorldModel model;
 	private WorldView worldView;
 	private NoteDatabaseHelper dbHelper;
+	private boolean needHowToNote;
 	
 	private Note noteToSave;
 	
@@ -63,6 +66,7 @@ public class Main extends TapAndSensingActivity {
 	    noteToSave = null;
 	    getNoteToSave();
 	    
+	    needHowToNote = false;
 	    initializeNotes();
 	}
 	
@@ -95,16 +99,17 @@ public class Main extends TapAndSensingActivity {
 			displayNote(note);
 		}
 		
+		Log.d("Main", "Notes size: " + dbHelper.getNotes().size());
 		// add a How-To note if there are no notes.
 		if (dbHelper.getNotes().isEmpty()) {
-			makeHowToNote();
+			needHowToNote = true; 
 		}
 	}
 	
 	private void makeHowToNote() {
 		// make note from bitmap
 		Bitmap bitmap  = BitmapFactory.decodeResource(getResources(), R.drawable.how_to);
-		AbstractNote note = new FakeNote(0, Main.NUM_VISUAL_COLUMNS, 0, 0, 0, 0, bitmap, bitmap);
+		AbstractNote note = new FakeNote(0, model.getDisplayVisualColumn(), 0, 0, 0, 0, bitmap, bitmap);
 		
 		// save and display
 		displayNote(note);
@@ -213,7 +218,8 @@ public class Main extends TapAndSensingActivity {
 	public void onDestroy() {
 		Log.d("Main", "destroyed!");
 		dbHelper.close();
-		dbHelper.flush();
+		unbindDrawables(worldView);
+		System.gc();
 		super.onDestroy();
 	}
 	
@@ -231,6 +237,14 @@ public class Main extends TapAndSensingActivity {
 		
 		// here is the visual column state change
 		model.setVisualColumn(info.VisualColumnNice);
+		
+		// need how to note 
+		if (needHowToNote) {
+			if (noteToSave == null) {
+				makeHowToNote();
+			}
+			needHowToNote = false;
+		}
 		
 		// we now know for certain that the model's vc is up to date, 
 		// so we can go ahead and add a note
@@ -251,4 +265,16 @@ public class Main extends TapAndSensingActivity {
 		
 		startActivity(intent);
 	}
+	
+	private void unbindDrawables(View view) {
+        if (view.getBackground() != null) {
+        	view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+            	unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }
+            ((ViewGroup) view).removeAllViews();
+        }
+    }
 }
