@@ -19,30 +19,35 @@ public final class R {
         public static final int roundbutton=0x7f020002;
     }
     public static final class id {
-        public static final int action=0x7f080012;
-        public static final int canvas_layout=0x7f080007;
-        public static final int canvas_view=0x7f080008;
+        public static final int action=0x7f080017;
+        public static final int canvas_container=0x7f08000c;
+        public static final int canvas_view=0x7f08000d;
         public static final int direction=0x7f080000;
         public static final int edit_box=0x7f080003;
         public static final int editor_layout=0x7f080002;
-        public static final int event=0x7f08000a;
+        public static final int erase_button=0x7f080009;
+        public static final int event=0x7f08000f;
         public static final int hello=0x7f080006;
         public static final int main_layout=0x7f080005;
-        public static final int max_accel=0x7f080011;
-        public static final int max_x=0x7f08000e;
-        public static final int max_y=0x7f08000f;
-        public static final int max_z=0x7f080010;
-        public static final int options_new_image=0x7f080016;
-        public static final int options_new_text=0x7f080015;
-        public static final int options_return_to_world=0x7f080017;
+        public static final int max_accel=0x7f080016;
+        public static final int max_x=0x7f080013;
+        public static final int max_y=0x7f080014;
+        public static final int max_z=0x7f080015;
+        public static final int options_new_image=0x7f08001b;
+        public static final int options_new_text=0x7f08001a;
+        public static final int options_return_to_world=0x7f08001c;
+        public static final int pen_button=0x7f080008;
+        public static final int pencanvas_layout=0x7f080007;
+        public static final int redo_button=0x7f08000b;
         public static final int save_button=0x7f080004;
-        public static final int tap_layout=0x7f080009;
-        public static final int time=0x7f08000b;
-        public static final int update_box=0x7f080014;
-        public static final int update_layout=0x7f080013;
+        public static final int tap_layout=0x7f08000e;
+        public static final int time=0x7f080010;
+        public static final int undo_button=0x7f08000a;
+        public static final int update_box=0x7f080019;
+        public static final int update_layout=0x7f080018;
         public static final int values=0x7f080001;
-        public static final int x=0x7f08000c;
-        public static final int y=0x7f08000d;
+        public static final int x=0x7f080011;
+        public static final int y=0x7f080012;
     }
     public static final class integer {
         public static final int num_visual_columns=0x7f050000;
@@ -61,15 +66,19 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f060001;
+        public static final int clear_all=0x7f06000a;
+        public static final int confirm_clear_all=0x7f06000b;
         public static final int editor_begin=0x7f060002;
         public static final int editor_save=0x7f060003;
         public static final int eraser=0x7f060005;
+        public static final int eraser_settings=0x7f060009;
         public static final int hello=0x7f060000;
-        public static final int menu_new_image_note=0x7f06000a;
-        public static final int menu_new_text_note=0x7f060009;
-        public static final int menu_return_to_world=0x7f06000b;
+        public static final int menu_new_image_note=0x7f06000e;
+        public static final int menu_new_text_note=0x7f06000d;
+        public static final int menu_return_to_world=0x7f06000f;
         public static final int pen=0x7f060004;
-        public static final int pen_save=0x7f060008;
+        public static final int pen_save=0x7f06000c;
+        public static final int pen_settings=0x7f060008;
         public static final int redo=0x7f060007;
         public static final int undo=0x7f060006;
     }

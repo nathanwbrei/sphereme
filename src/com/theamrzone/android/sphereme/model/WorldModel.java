@@ -31,6 +31,10 @@ public class WorldModel {
 		fireListeners();
 	}
 	
+	public void setDisplayVisualColumn(int newVC) {
+		displayVisualColumn = newVC;
+	}
+	
 	public void setVisualColumn(int newVC) {
 		// set bias if unset
 		if (Main.visualColumnBias == Main.BAD_BIAS) {

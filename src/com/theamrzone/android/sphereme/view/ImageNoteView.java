@@ -24,8 +24,8 @@ public class ImageNoteView extends ImageView implements INoteView {
 //			setBackgroundResource(R.drawable.note);
 //			setBackgroundColor(0xffffffff);
 //	    	setScaleType(ImageView.ScaleType.CENTER);
-	        ColorFilter filter = new LightingColorFilter(Color.WHITE, Color.WHITE);
-	        setColorFilter(filter);
+//	        ColorFilter filter = new LightingColorFilter(Color.WHITE, Color.WHITE);
+//	        setColorFilter(filter);
 	        setImageBitmap(b);
 			setId(100 + note.getId()); // make sure that it is 1-indexed instead of 0-indexed
 		}

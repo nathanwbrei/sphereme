@@ -124,9 +124,12 @@ public class Main extends TapAndSensingActivity {
 								  noteToSave.getStringContent());				
 			}
 			
-			if (noteToSave.getR() == 0) {
+			if (noteToSave.getT() == 0) {
 				noteToSave.setRTZ(0, model.getActualVisualColumn(), 0);
+			} else {
+				model.setDisplayVisualColumn((int) noteToSave.getT());
 			}
+
 			noteToSave.save(dbHelper);
 			displayNote(noteToSave);
 			noteToSave = null;

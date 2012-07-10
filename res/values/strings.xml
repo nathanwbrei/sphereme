@@ -11,6 +11,10 @@
     <string name="eraser">Eraser</string>
     <string name="undo">Undo</string>
     <string name="redo">Redo</string>
+    <string name="pen_settings">Pen Settings</string>
+    <string name="eraser_settings">Eraser Settings</string>
+    <string name="clear_all">Clear all</string>
+    <string name="confirm_clear_all">Are you sure you want to erase everything?</string>
     <string name="pen_save">Save! (Samsung Developers are awesome!)</string>
 	
 	<string name="menu_new_text_note">New text-based thought</string>

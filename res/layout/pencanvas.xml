@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/canvas_layout"
+    android:id="@+id/pencanvas_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#00000000"
     android:orientation="vertical" >
     
 	
-	<!-- LinearLayout
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
 		
 		<Button
-			android:id="@+id/setting_button"
+			android:id="@+id/pen_button"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/pen"
@@ -39,14 +39,19 @@
 			android:layout_height="wrap_content"
 			android:text="@string/redo"
 			android:layout_weight="1"/>
-	</LinearLayout -->
+	</LinearLayout>
 
-    <com.samsung.spensdk.SCanvasView
-		android:id="@+id/canvas_view"
+	<RelativeLayout 
+		android:id="@+id/canvas_container"
 		android:layout_width="fill_parent"
 		android:layout_weight="1"
-		android:layout_height="0dp" 
-		android:gravity="top"/>
+		android:layout_height="0dp"
+		android:gravity="top">
+    	<com.samsung.spensdk.SCanvasView
+			android:id="@+id/canvas_view"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+    </RelativeLayout>
 
 	<Button
 		android:id="@+id/save_button"
